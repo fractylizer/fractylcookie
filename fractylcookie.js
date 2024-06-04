@@ -3,7 +3,7 @@ Game.Win('Third-party');
 Game.registerMod('fractylCookie',{
   init:function(){
     Game.registerHook('check', this.check);
-    Game.registerHook('reset', function(hardreset) {this.reset(hardreset)});
+    Game.registerHook('reset', function(hardreset) {Game.mods['fractylCookie'].reset(hardreset)});
     if(Game.ready) {this.create()}
     else {Game.registerHook('create', this.create)};
   },
