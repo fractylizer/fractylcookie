@@ -29,6 +29,8 @@ Game.registerMod('fractylCookie',{
   create:function() {
     Game.Loader.Replace('wrinkler.png',`https://fractylizer.github.io/fractylcookie/img/wrinkler.png`);
     Game.Loader.Replace('perfectCookie.png',`https://fractylizer.github.io/fractylcookie/img/perfectCookie.png`);
+    Game.Loader.Replace('goldCookie.png',`https://fractylizer.github.io/fractylcookie/img/goldCookie.png`);
+    Game.Loader.Replace('wrathCookie.png',`https://fractylizer.github.io/fractylcookie/img/wrathCookie.png`);
     Game.Objects['You'].sellFunction=function(){Game.Win('Self-sacrifice')}
     this.createAchievements()
   },
@@ -37,7 +39,7 @@ Game.registerMod('fractylCookie',{
   },
   reset:function(hardreset) {
     if (!hardreset) {
-      if (Math.round(Game.cookies)==69000000000000) Game.Win('When the cookies ascend just nice');
+      if (Math.round(Game.cookies)==69000000000000) {Game.Win('When the cookies ascend just nice');}
     }
   },
   createAchievements:function() {
