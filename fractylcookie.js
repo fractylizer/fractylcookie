@@ -10,8 +10,10 @@ Game.registerMod('fractylCookie',{
   save:function(){
     let objToSave = {
       achievements:"",
+      upgrades:"",
     };
     for(let i of this.achievements) {objToSave.achievements+=i.won};
+    for(let i of this.upgrades) {objToSave.upgrades+=i.bought};
     return JSON.stringify(objToSave);
   },
   load:function(str){
@@ -25,7 +27,12 @@ Game.registerMod('fractylCookie',{
     }
     Game.last.order = achorder;
   },
+  addCookieUpgrade:function(obj,upgorder){
+    this.upgrades.push(Game.NewUpgradeCookie(obj));
+    Game.last.order = upgorder;
+  },
   achievements: [],
+  upgrades: [],
   create:function() {
     Game.Loader.Replace('wrinkler.png',`https://fractylizer.github.io/fractylcookie/img/wrinkler.png`);
     Game.Loader.Replace('perfectCookie.png',`https://fractylizer.github.io/fractylcookie/img/perfectCookie.png`);
@@ -47,10 +54,9 @@ Game.registerMod('fractylCookie',{
     }
   },
   createUpgrades:function() {
-		Game.NewUpgradeCookie({name:'Fractyl cookies',desc:'A mostly plain cookie, with a white chocolate logo. A delicious reminder to give Fractyl all your money.',icon:[0,1,this.icons],power:5,price:9999999999999999*5});
-    Game.last.order = 10020.2575;
-		Game.NewUpgradeCookie({name:'Red velvet cookies',desc:'Fancy! The presence of white chocolate chips is a given.',icon:[1,1,this.icons],power:2,price:9999999999*5});
-    Game.last.order = 10003;
+		this.addCookieUpgrade({name:'Fractyl cookies',desc:'A mostly plain cookie, with a white chocolate logo. A delicious reminder to give Fractyl all your money.',icon:[0,1,this.icons],power:5,price:9999999999999999*5},10020.2575);
+		this.addCookieUpgrade({name:'Red velvet cookies',desc:'Fancy! The presence of white chocolate chips is a given.',icon:[1,1,this.icons],power:2,price:9999999999*5},10003);
+    this.addCookieUpgrade({name:'Compact discs',desc:'Despite what you might assume, these are often not interchangable with cookies.',icon:[2,1,this.icons],require:'Box of not cookies',power:4,price:Math.pow(10,48)},10061)
     LocalizeUpgradesAndAchievs();
   },
   createAchievements:function() {
@@ -60,6 +66,8 @@ Game.registerMod('fractylCookie',{
     this.addAchievement("Really?", "Use the <b>Extra Content Mod</b>.<q>I thought you had a life.<br>Seems I was mistaken.</q>",[2,0,this.icons],69421,'shadow');
     this.addAchievement("When the cookies ascend just nice", loc("Ascend with exactly <b>%1</b>.",loc("%1 cookie",LBeautify(6.9e13))),[3,0,this.icons],30250.398,'shadow');
     this.addAchievement("Fibonacci", "Have at least <b>1 of the most expensive building, 1 of the second-most expensive, 2 of the next, 3 of the next, 5 of the next</b> and so on (capped at 377).",[23,12],7000.08,'normal');
+    this.addAchievement("Golden combination", "Have <b>2 positive multiplier buffs</b> active simultaneously.",[3,1,this.icons],10000.3,'normal');
+    this.addAchievement("Golden triple", "Have <b>3 positive multiplier buffs</b> active simultaneously.",[4,1,this.icons],10000.301,'normal');
     LocalizeUpgradesAndAchievs();
   },
   checkAchievements:function() {
@@ -79,7 +87,16 @@ Game.registerMod('fractylCookie',{
       }
     }
     if (isafibonacci==1) Game.Win('Fibonacci');
-
+    let buffs = Object.keys(Game.buffs);
+    let badBuffs = ['Clot','Slap to the face','Senility','Locusts','Cave-in','Jammed machinery','Recession','Crisis of faith','Magivores','Black holes','Lab disaster','Dimensional calamity','Time jam','Predictable tragedy','Eclipse','Dry spell','Microcosm','Antipattern','Big crunch','Brain freeze','Clone strike','Cursed finger','Gifted out','Cookie storm']
+    badBuffs.forEach(buff => {buffs = Game.mods['fractylCookie'].rifarr(buffs,buff)});
+    if (buffs.length >= 2) {Game.Win('Golden combination')}
+    if (buffs.length >= 3) {Game.Win('Golden ternary')}
+  },
+  rifarr:function(arr, value) {
+    let index = arr.indexOf(value);
+    if (index > -1) {arr.splice(index, 1);}
+    return arr;
   },
   fibonacci:function(n){return Math.round((Math.pow((1 + Math.sqrt(5)) / 2, n) - Math.pow((1 - Math.sqrt(5)) / 2, n)) / Math.sqrt(5));},
   url:"https://fractylizer.github.io/fractylcookie/",
