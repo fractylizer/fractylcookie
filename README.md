@@ -2,7 +2,7 @@
 **A small, incomplete, bad, themeless Cookie Clicker mod.**
 ## Features
 - Adds the Fractyl logo to the big cookie and wrinklers
-- Three new cookie upgrades: **Fractyl cookies**, **Red velvet cookies** and **Compact discs**
+- Six new cookie upgrades: **Fractyl cookies**, **Red velvet cookies**, **Compact discs**, **Inverted cookies**, **Sausage rolls** and **Triple chocolate cookies**
 - Four new regular achievements: **Self-sacrifice**, **Fibonacci**, **Golden combination** and **Golden triple**
 - Four new shadow achievements: **Regular person complex**, **Really?**, **Pretty pink priorities** and **When the cookies ascend just nice**
 ## How to use
