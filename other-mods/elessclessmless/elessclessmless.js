@@ -9,7 +9,7 @@ Game.registerMod('elessclessmless',{
   spritesheet:"https://lookas123.github.io/ECM/ExtraContent.png",
   createAchievements: function(){
     this.achievements = []
-    this.achievements.push(new Game.Achievement("Small block of gold", "Click <b>14 golden cookies.</b> <q>Worth approximately 9 ingots.</q>",[0,0,this.spritesheet]))
+    this.achievements.push(new Game.Achievement("Small block of gold", "Click <b>14 golden cookies.</b> <q>Worth approximately 0.00162 ingots.</q>",[0,0,this.spritesheet]))
     this.achievements.push(new Game.Achievement("Short cycle", "Ascend <b>20 times.</b> <q>Now you can tend to the cookie again. Because that's the point of the game.</q>",[1,0,this.spritesheet]))
     this.achievements.push(new Game.Achievement("Shiny wrinklers are too rare", "Have a <b>wrinkler</b>. <q>RNG be gone!</q>",[2,0,this.spritesheet]))
     this.achievements.push(new Game.Achievement("Passive income?", "Have your stock market profits surpass <b>one hour per year that Cookie Clicker has existed.</b> <q>Hey, this reminds me of birthday cookie!</q>",[3,0,this.spritesheet]))
