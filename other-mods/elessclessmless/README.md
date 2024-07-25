@@ -12,6 +12,7 @@
   - The hole between atoms
   - The will of the not-so wondrous wizard
   - Go inside
+- Nothing else (lol)
 
 ## How to use
 ### Option 1. Console
