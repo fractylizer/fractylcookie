@@ -12,6 +12,7 @@
   - The hole between atoms
   - The will of the not-so wondrous wizard
   - Go inside
+
 ## How to use
 ### Option 1. Console
 Paste this code into your browser console: `Game.LoadMod("https://fractylizer.github.io/fractylcookie/other-mods/elessclessmless/elessclessmless.js")`
