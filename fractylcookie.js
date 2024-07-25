@@ -68,6 +68,7 @@ Game.registerMod('fractylCookie',{
     this.addAchievement("Fibonacci", "Have at least <b>1 of the most expensive building, 1 of the second-most expensive, 2 of the next, 3 of the next, 5 of the next</b> and so on (capped at 377).",[23,12],7000.08,'normal');
     this.addAchievement("Golden combination", "Have <b>2 positive multiplier buffs</b> active simultaneously.",[3,1,this.icons],10000.3,'normal');
     this.addAchievement("Golden triple", "Have <b>3 positive multiplier buffs</b> active simultaneously.",[4,1,this.icons],10000.301,'normal');
+    this.addAchievement("Really-er?", "Use the <b>Extra-er Content-er Mod-er</b>.<q>You're gonna need thousands of frames per second, an autoclicker, and a LOT of free time.</q>",[5,0,this.icons],69422,'shadow');
     LocalizeUpgradesAndAchievs();
   },
   checkAchievements:function() {
@@ -80,6 +81,7 @@ Game.registerMod('fractylCookie',{
     ) {Game.Win('Pretty pink priorities')};
     if (Game.bakeryName.toLowerCase() =='fractyl') {Game.Win('Regular person complex')};
     if (Game.mods['extraContent'] !== undefined) {Game.Win('Really?')}
+    if (Game.mods['Eercermer'] !== undefined) {Game.Win('Really-er?')}
     let isafibonacci = 1;
     if (!Game.HasAchiev('Fibonacci')) {
       for (var i in Game.Objects) {
