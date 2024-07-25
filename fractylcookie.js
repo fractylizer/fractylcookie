@@ -69,6 +69,7 @@ Game.registerMod('fractylCookie',{
     this.addAchievement("Golden combination", "Have <b>2 positive multiplier buffs</b> active simultaneously.",[3,1,this.icons],10000.3,'normal');
     this.addAchievement("Golden triple", "Have <b>3 positive multiplier buffs</b> active simultaneously.",[4,1,this.icons],10000.301,'normal');
     this.addAchievement("Really-er?", "Use the <b>Extra-er Content-er Mod-er</b>.<q>You're gonna need thousands of frames per second, an autoclicker, and a LOT of free time.</q>",[5,0,this.icons],69423,'shadow');
+    this.addAchievement("Really-less?", "Use the <b>Extra-less Content-less Mod-less</b>.<q>For the normal ones among us.</q>",[6,0,this.icons],69424,'shadow');
     LocalizeUpgradesAndAchievs();
   },
   checkAchievements:function() {
@@ -82,6 +83,7 @@ Game.registerMod('fractylCookie',{
     if (Game.bakeryName.toLowerCase() =='fractyl') {Game.Win('Regular person complex')};
     if (Game.mods['extraContent'] !== undefined) {Game.Win('Really?')}
     if (Game.mods['Eercermer'] !== undefined) {Game.Win('Really-er?')}
+    if (Game.mods['elessclessmless'] !== undefined) {Game.Win('Really-less?')}
     let isafibonacci = 1;
     if (!Game.HasAchiev('Fibonacci')) {
       for (var i in Game.Objects) {
