@@ -2,9 +2,24 @@
 **A small, incomplete, bad, themeless Cookie Clicker mod.**
 ## Features
 - Adds the Fractyl logo to the big cookie and wrinklers
-- Six new cookie upgrades: **Fractyl cookies**, **Red velvet cookies**, **Compact discs**, **Inverted cookies**, **Sausage rolls** and **Triple chocolate cookies**
-- Four new regular achievements: **Self-sacrifice**, **Fibonacci**, **Golden combination** and **Golden triple**
-- Four new shadow achievements: **Regular person complex**, **Really?**, **Pretty pink priorities** and **When the cookies ascend just nice**
+- Six new cookie upgrades: 
+  - **Fractyl cookies**
+  - **Red velvet cookies**
+  - **Compact discs**
+  - **Inverted cookies**
+  - **Sausage rolls**
+  - **Triple chocolate cookies**
+- Four new regular achievements:
+  - **Self-sacrifice**
+  - **Fibonacci**
+  - **Golden combination**
+  - **Golden triple**
+- Four new shadow achievements: 
+  - **Regular person complex**
+  - **Really?**
+  - **Pretty pink priorities**
+  - **When the cookies ascend just nice**
+- Removes Herobrine
 ## How to use
 ### Option 1. Console
 Paste this code into your browser console: `Game.LoadMod("https://fractylizer.github.io/fractylcookie/fractylcookie.js")`
