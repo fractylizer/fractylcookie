@@ -27,7 +27,7 @@ Game.registerMod('fractylCookie',{
       Game.Upgrades['Fractyl switch [on]'].bought = 0;
       Game.Unlock('Fractyl switch [on]')
       this.fractylMode(1);
-    } else if (data.fractylMode == 0) {
+    } else {
       Game.Upgrades['Fractyl switch [off]'].bought = 0;
       Game.Upgrades['Fractyl switch [on]'].bought = 1;
       Game.Unlock('Fractyl switch [off]')
