@@ -11,15 +11,28 @@ Game.registerMod('fractylCookie',{
     let objToSave = {
       achievements:"",
       upgrades:"",
+      fractylMode:0
     };
     for(let i of this.achievements) {objToSave.achievements+=i.won};
     for(let i of this.upgrades) {objToSave.upgrades+=i.bought};
+    objToSave.fractylMode = Game.Upgrades['Fractyl switch [off]'].bought
     return JSON.stringify(objToSave);
   },
   load:function(str){
     var data = JSON.parse(str);
     for(let i in data.achievements) {this.achievements[i].won = Number(data.achievements[i])}
     for(let i in data.upgrades) {this.upgrades[i].bought = Number(data.upgrades[i])}
+    if (data.fractylMode == 1) {
+      Game.Upgrades['Fractyl switch [off]'].bought = 1;
+      Game.Upgrades['Fractyl switch [on]'].bought = 0;
+      Game.Unlock('Fractyl switch [on]')
+      this.fractylMode(1);
+    } else if (data.fractylMode == 0) {
+      Game.Upgrades['Fractyl switch [off]'].bought = 0;
+      Game.Upgrades['Fractyl switch [on]'].bought = 1;
+      Game.Unlock('Fractyl switch [off]')
+      this.fractylMode(0);
+    }
   },
   addAchievement:function(name,desc,icon,achorder,pool) {
     this.achievements.push(new Game.Achievement(name,desc,icon))
@@ -47,6 +60,16 @@ Game.registerMod('fractylCookie',{
   },
   achievements: [],
   upgrades: [],
+  fractylMode:function(activate){
+    if (activate == 1) {
+      console.log()
+      Game.Loader.Replace('wrinkler.png',`https://fractylizer.github.io/fractylcookie/img/wrinkler.png`);
+      Game.Loader.Replace('perfectCookie.png',`https://fractylizer.github.io/fractylcookie/img/perfectCookie.png`);
+    } else if (activate == 0) {
+      Game.Loader.Replace(`wrinkler.png`,'wrinkler.png');
+      Game.Loader.Replace(`perfectCookie.png`,'perfectCookie.png');
+    }
+  },
   create:function() {
     Game.NewUpgradeCookie=function(obj)
 		{
@@ -61,10 +84,6 @@ Game.registerMod('fractylCookie',{
       console.log(upgrade)
 			return upgrade;
 		}
-    Game.Loader.Replace('wrinkler.png',`https://fractylizer.github.io/fractylcookie/img/wrinkler.png`);
-    Game.Loader.Replace('perfectCookie.png',`https://fractylizer.github.io/fractylcookie/img/perfectCookie.png`);
-    Game.Loader.Replace('goldCookie.png',`https://fractylizer.github.io/fractylcookie/img/goldCookie.png`);
-    Game.Loader.Replace('wrathCookie.png',`https://fractylizer.github.io/fractylcookie/img/wrathCookie.png`);
     Game.Objects['You'].sellFunction=function(){Game.Win('Self-sacrifice')}
     Game.Reset = Function(`
       (${Game.Reset.toString().replace(`if (Math.round(Game.cookies)==1000000000000) Game.Win('When the cookies ascend just right');`,`if (Math.round(Game.cookies)==1000000000000) Game.Win('When the cookies ascend just right'); if (Math.round(Game.cookies)==69000000000000) Game.Win('When the cookies ascend just nice');`)})();
@@ -102,6 +121,18 @@ Game.registerMod('fractylCookie',{
     this.addCookieUpgrade({name:'Chocolate walnut cookies',desc:'These were stumbled upon during an investigation into the possible sentience of walnuts. The investigation is actively being interrupted by rogue walnuts escaping the walnut facility.',icon:[6,2,this.icons],require:chocPacket,power:2,price:200000000},10033.04)
     this.addCookieUpgrade({name:'Chocolate cashew cookies',desc:'You did your research properly before making these right? You don\'t know what things cashews could achieve when in contact with foreign ingredients.',icon:[3,2,this.icons],require:chocPacket,power:2,price:200000000},10033.05)
     this.addCookieUpgrade({name:'Chocolate fractyl cookies',desc:'These could do with a bit of contrast, couldn\'t they?',icon:[2,3,this.icons],require:chocPacket,power:2,price:9999999999999999*7},10033.05)
+
+
+		order=50001;
+		new Game.Upgrade('Fractyl switch [off]',loc("Turning this on will activate <b>Fractyl mode</b>, which adds the Fractyl logo to the big cookie and wrinklers. <br>Costs 1 cookie.",1),1,[0,3,this.icons]);
+		Game.last.pool='toggle';Game.last.toggleInto='Fractyl switch [on]';
+		Game.last.buyFunction=function(){Game.mods['fractylCookie'].fractylMode(1)}
+    Game.last.order = 50002;
+		new Game.Upgrade('Fractyl switch [on]',loc("<b>Fractyl mode</b> is currently active. <br>Turning it off will revert the big cookie and wrinklers to normal. <br>Costs 1 cookie.",1),1000000,[1,3,this.icons]);
+		Game.last.pool='toggle';Game.last.toggleInto='Fractyl switch [off]';
+		Game.last.buyFunction=function(){Game.mods['fractylCookie'].fractylMode(0)}
+    Game.last.order = 50003;
+    Game.Unlock('Fractyl switch [on]')
 
     LocalizeUpgradesAndAchievs();
   },
