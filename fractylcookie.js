@@ -32,9 +32,35 @@ Game.registerMod('fractylCookie',{
     this.upgrades.push(Game.NewUpgradeCookie(obj));
     Game.last.order = upgorder;
   },
+  addPrestigeUpgrade:function(name,desc,cost,icon,parents,order){
+    this.upgrades.push(new Game.Upgrade(name,desc,cost,icon))
+    Game.last.pool = 'prestige';
+    let newParents = parents.map(function(e) { 
+      e = Game.Upgrades[e]; 
+      return e;
+    });
+    Game.last.parents = newParents;
+    Game.last.order = order;
+    Game.last.posX=50
+    Game.last.posY=-200
+    Game.PrestigeUpgrades.push(Game.last)
+  },
   achievements: [],
   upgrades: [],
   create:function() {
+    Game.NewUpgradeCookie=function(obj)
+		{
+      console.log(obj.name);
+			var upgrade=new Game.Upgrade(obj.name,loc("Cookie production multiplier <b>+%1%</b>.",'[x]').replace('[x]',Beautify((typeof(obj.power)==='function'?obj.power(obj):obj.power)))+(EN?'<q>'+obj.desc+'</q>':''),obj.price,obj.icon);
+			upgrade.power=obj.power;
+			upgrade.pool='cookie';
+			var toPush={cookies:obj.price/20,name:obj.name};
+			if (obj.require) toPush.require=obj.require;console.log('require');
+			if (obj.season) toPush.season=obj.season;
+			if (!obj.locked) Game.UnlockAt.push(toPush);console.log('unlockat');console.log(toPush);upgrade.unlockAt = toPush;
+      console.log(upgrade)
+			return upgrade;
+		}
     Game.Loader.Replace('wrinkler.png',`https://fractylizer.github.io/fractylcookie/img/wrinkler.png`);
     Game.Loader.Replace('perfectCookie.png',`https://fractylizer.github.io/fractylcookie/img/perfectCookie.png`);
     Game.Loader.Replace('goldCookie.png',`https://fractylizer.github.io/fractylcookie/img/goldCookie.png`);
@@ -49,14 +75,34 @@ Game.registerMod('fractylCookie',{
   check:function() {
     Game.mods['fractylCookie'].checkAchievements();
   },
-  reset:function(hardreset) {if(hardreset){}},
+  reset:function(hardreset) {
+    if (hardreset) {
+      for(let i of this.achievements) {this.achievements[i].owned = 0};
+      for(let i of this.upgrades) {this.upgrades[i].bought = 0};
+    }
+  },
   createUpgrades:function() {
+
 		this.addCookieUpgrade({name:'Fractyl cookies',desc:'A mostly plain cookie, with a white chocolate logo. A delicious reminder to give Fractyl all your money.',icon:[0,1,this.icons],power:5,price:9999999999999999*5},10020.2575);
 		this.addCookieUpgrade({name:'Red velvet cookies',desc:'Fancy! The presence of white chocolate chips is a given.',icon:[1,1,this.icons],power:2,price:9999999999*5},10004);
     this.addCookieUpgrade({name:'Compact discs',desc:'Despite what you might assume, these are often not interchangable with cookies.',icon:[2,1,this.icons],require:'Box of not cookies',power:5,price:Math.pow(10,48)},10061)
     this.addCookieUpgrade({name:'Inverted cookies',desc:'The result of extensive photo manipulation. A magical sight.',icon:[4,0,this.icons],require:'Box of maybe cookies',power:5,price:Math.pow(10,49)},10051)
-    this.addCookieUpgrade({name:'Sausage rolls',desc:'It\'s the pastry equivalent of a hotdog, and it stands out from the other pastries which are much more on-theme.',icon:[1,2,this.icons],require:'Box of pastries',power:4,price:Math.pow(10,49)},10041)
+    this.addCookieUpgrade({name:'Sausage rolls',desc:'It\'s the pastry equivalent of a hotdog, so it stands out from the other pastries which are much more on-theme.',icon:[1,2,this.icons],require:'Box of pastries',power:4,price:Math.pow(10,49)},10041)
     this.addCookieUpgrade({name:'Triple chocolate cookies.',desc:'White, milk, and dark. The end to all chocolate conflict, and the beginning of a bright future.',icon:[0,2,this.icons],power:4,price:9999999999*5},10003)
+
+    let chocPacket = 'Packet of chocolate cookies'
+		this.addPrestigeUpgrade(chocPacket,loc("Contains an assortment of chocolate cookies.")
+    +'<q>If it ain\'t broke, create a chocolate version!</q>',25,[5,1,this.icons],['Heavenly cookies'],0.1);
+    Game.Upgrades['Starter kit'].parents.push(Game.Upgrades[chocPacket])
+
+    this.addCookieUpgrade({name:'Chocolate peanut butter cookies',desc:'A common form of the chocolate cookie. Made using fresh chocolate peanuts.',icon:[3,3,this.icons],require:chocPacket,power:2,price:200000000},10033)
+    this.addCookieUpgrade({name:'Chocolate coconut cookies',desc:'These are more common in cake form. Feel free to berate the inventor for not dubbing them "cocoacoconut cookies".',icon:[2,2,this.icons],require:chocPacket,power:2,price:200000000},10033.01)
+    this.addCookieUpgrade({name:'Chocolate almond cookies',desc:'Similar in appearance to a chocolated-covered almond with too much chocolate.',icon:[4,2,this.icons],require:chocPacket,power:2,price:200000000},10033.02)
+    this.addCookieUpgrade({name:'Chocolate hazelnut cookies',desc:'Reminiscent of a particular spread. Would not recommended trying to maximise the surface area of your cookies, though.',icon:[5,2,this.icons],require:chocPacket,power:2,price:200000000},10033.03)
+    this.addCookieUpgrade({name:'Chocolate walnut cookies',desc:'These were stumbled upon during an investigation into the possible sentience of walnuts. The investigation is actively being interrupted by rogue walnuts escaping the walnut facility.',icon:[6,2,this.icons],require:chocPacket,power:2,price:200000000},10033.04)
+    this.addCookieUpgrade({name:'Chocolate cashew cookies',desc:'You did your research properly before making these right? You don\'t know what things cashews could achieve when in contact with foreign ingredients.',icon:[3,2,this.icons],require:chocPacket,power:2,price:200000000},10033.05)
+    this.addCookieUpgrade({name:'Chocolate fractyl cookies',desc:'These could do with a bit of contrast, couldn\'t they?',icon:[2,3,this.icons],require:chocPacket,power:2,price:9999999999999999*7},10033.05)
+
     LocalizeUpgradesAndAchievs();
   },
   createAchievements:function() {

@@ -2,13 +2,22 @@
 **A small, incomplete, bad, themeless Cookie Clicker mod.**
 ## Features
 - Adds the Fractyl logo to the big cookie and wrinklers
-- Six new cookie upgrades: 
+- Thirteen new cookie upgrades: 
   - **Fractyl cookies**
   - **Red velvet cookies**
   - **Compact discs**
   - **Inverted cookies**
   - **Sausage rolls**
   - **Triple chocolate cookies**
+  - **Chocolate peanut butter cookies**
+  - **Chocolate coconut cookies**
+  - **Chocolate almond cookies**
+  - **Chocolate hazelnut cookies**
+  - **Chocolate walnut cookies**
+  - **Chocolate cashew cookies**
+  - **Chocolate fractyl cookies**
+- One new heavenly upgrade:
+  - **Packet of chocolate cookies**
 - Four new regular achievements:
   - **Self-sacrifice**
   - **Fibonacci**
