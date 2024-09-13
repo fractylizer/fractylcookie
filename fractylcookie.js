@@ -122,13 +122,13 @@ Game.registerMod('fractylCookie',{
     this.addCookieUpgrade({name:'Chocolate cashew cookies',desc:'You did your research properly before making these right? You don\'t know what things cashews could achieve when in contact with foreign ingredients.',icon:[3,2,this.icons],require:chocPacket,power:2,price:200000000},10033.05)
     this.addCookieUpgrade({name:'Chocolate fractyl cookies',desc:'These could do with a bit of contrast, couldn\'t they?',icon:[2,3,this.icons],require:chocPacket,power:2,price:9999999999999999*7},10033.05)
 
-
+    // Fractyl switch
 		order=50001;
 		new Game.Upgrade('Fractyl switch [off]',loc("Turning this on will activate <b>Fractyl mode</b>, which adds the Fractyl logo to the big cookie and wrinklers. <br>Costs 1 cookie.",1),1,[0,3,this.icons]);
 		Game.last.pool='toggle';Game.last.toggleInto='Fractyl switch [on]';
 		Game.last.buyFunction=function(){Game.mods['fractylCookie'].fractylMode(1)}
     Game.last.order = 50002;
-		new Game.Upgrade('Fractyl switch [on]',loc("<b>Fractyl mode</b> is currently active. <br>Turning it off will revert the big cookie and wrinklers to normal. <br>Costs 1 cookie.",1),1000000,[1,3,this.icons]);
+		new Game.Upgrade('Fractyl switch [on]',loc("<b>Fractyl mode</b> is currently active. <br>Turning it off will revert the big cookie and wrinklers to normal. <br>Costs 1 cookie.",1),1,[1,3,this.icons]);
 		Game.last.pool='toggle';Game.last.toggleInto='Fractyl switch [off]';
 		Game.last.buyFunction=function(){Game.mods['fractylCookie'].fractylMode(0)}
     Game.last.order = 50003;
