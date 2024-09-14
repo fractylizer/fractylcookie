@@ -8,21 +8,22 @@ Game.registerMod('fractylCookie',{
     else {Game.registerHook('create', this.create)};
   },
   save:function(){
-    let objToSave = {
-      achievements:"",
-      upgrades:"",
-      fractylMode:0
-    };
-    for(let i of this.achievements) {objToSave.achievements+=i.won};
-    for(let i of this.upgrades) {objToSave.upgrades+=i.bought};
-    objToSave.fractylMode = Game.Upgrades['Fractyl switch [off]'].bought
-    return JSON.stringify(objToSave);
+    let objToSave = ""
+    for(let i of this.achievements) {objToSave+=i.won};
+    objToSave += "|"
+    for(let i of this.upgrades) {objToSave+=i.bought};
+    objToSave += "|"
+    objToSave+=Game.Upgrades['Fractyl switch [off]'].bought
+    return objToSave;
   },
   load:function(str){
-    var data = JSON.parse(str);
-    for(let i in data.achievements) {this.achievements[i].won = Number(data.achievements[i])}
-    for(let i in data.upgrades) {this.upgrades[i].bought = Number(data.upgrades[i])}
-    if (data.fractylMode == 1) {
+    var data = str;
+    let dataAch = str.split("|")[0]
+    let dataUpg = str.split("|")[1]
+    let dataFM = str.split("|")[2]
+    for(let i in dataAch) {this.achievements[i].won = Number(dataAch[i])}
+    for(let i in dataUpg) {this.upgrades[i].bought = Number(dataUpg[i])}
+    if (dataFM == 1) {
       Game.Upgrades['Fractyl switch [off]'].bought = 1;
       Game.Upgrades['Fractyl switch [on]'].bought = 0;
       Game.Unlock('Fractyl switch [on]')
@@ -40,6 +41,11 @@ Game.registerMod('fractylCookie',{
       Game.last.pool = 'shadow';
     }
     Game.last.order = achorder;
+  },
+  addLevel20Achievement:function(name,desc,icon,obj,achorder) {
+    this.achievements.push(new Game.Achievement(name,desc,icon))
+    Game.last.order = achorder;
+    Game.Objects[obj].levelAchiev20 = Game.last;
   },
   addCookieUpgrade:function(obj,upgorder){
     this.upgrades.push(Game.NewUpgradeCookie(obj));
@@ -119,7 +125,7 @@ Game.registerMod('fractylCookie',{
     this.addCookieUpgrade({name:'Chocolate almond cookies',desc:'Similar in appearance to a chocolated-covered almond with too much chocolate.',icon:[4,2,this.icons],require:chocPacket,power:2,price:200000000},10033.02)
     this.addCookieUpgrade({name:'Chocolate hazelnut cookies',desc:'Reminiscent of a particular spread. Would not recommended trying to maximise the surface area of your cookies, though.',icon:[5,2,this.icons],require:chocPacket,power:2,price:200000000},10033.03)
     this.addCookieUpgrade({name:'Chocolate walnut cookies',desc:'These were stumbled upon during an investigation into the possible sentience of walnuts. The investigation is actively being interrupted by rogue walnuts escaping the walnut facility.',icon:[6,2,this.icons],require:chocPacket,power:2,price:200000000},10033.04)
-    this.addCookieUpgrade({name:'Chocolate cashew cookies',desc:'You did your research properly before making these right? You don\'t know what things cashews could achieve when in contact with foreign ingredients.',icon:[3,2,this.icons],require:chocPacket,power:2,price:200000000},10033.05)
+    this.addCookieUpgrade({name:'Chocolate cashew cookies',desc:'You did your research properly before making these, right? You don\'t know what things cashews could achieve when in contact with foreign ingredients.',icon:[3,2,this.icons],require:chocPacket,power:2,price:200000000},10033.05)
     this.addCookieUpgrade({name:'Chocolate fractyl cookies',desc:'These could do with a bit of contrast, couldn\'t they?',icon:[2,3,this.icons],require:chocPacket,power:2,price:9999999999999999*7},10033.05)
 
     // Fractyl switch
@@ -147,6 +153,21 @@ Game.registerMod('fractylCookie',{
     this.addAchievement("Golden triple", "Have <b>3 positive multiplier buffs</b> active simultaneously.",[4,1,this.icons],10000.301,'normal');
     this.addAchievement("Really-er?", "Use the <b>Extra-er Content-er Mod-er</b>.<q>You're gonna need thousands of frames per second, an autoclicker, and a LOT of free time.</q>",[5,0,this.icons],69423,'shadow');
     this.addAchievement("Really-less?", "Use the <b>Extra-less Content-less Mod-less</b>.<q>For the normal ones among us.</q>",[6,0,this.icons],69424,'shadow');
+
+    this.addLevel20Achievement("Double thumbs up", "Reach level <b>20</b> cursors.",[0,27],'Cursor',2521);
+    this.addLevel20Achievement("Old-fashioned", "Reach level <b>20</b> grandmas.",[1,27],'Grandma',2521);
+
+    // update levelup function and check levels
+    Object.keys(Game.Objects).forEach((key) => {
+      let obj = Game.Objects[key];
+      obj.levelUp.replace(
+      `if (me.level>=10 && me.levelAchiev10) Game.Win(me.levelAchiev10.name);`,
+      `if (me.level>=10 && me.levelAchiev10) Game.Win(me.levelAchiev10.name);
+      if (me.level>=20 && me.levelAchiev20) Game.Win(me.levelAchiev20.name);`
+      );
+      if (obj.level>=20 && obj.levelAchiev20) Game.Win(obj.levelAchiev20.name);
+    });
+
     LocalizeUpgradesAndAchievs();
   },
   checkAchievements:function() {

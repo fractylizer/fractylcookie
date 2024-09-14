@@ -3,31 +3,31 @@
 ## Features
 - Adds the Fractyl logo to the big cookie and wrinklers
 - Thirteen new cookie upgrades: 
-  - **Fractyl cookies**
-  - **Red velvet cookies**
-  - **Compact discs**
-  - **Inverted cookies**
-  - **Sausage rolls**
-  - **Triple chocolate cookies**
-  - **Chocolate peanut butter cookies**
-  - **Chocolate coconut cookies**
-  - **Chocolate almond cookies**
-  - **Chocolate hazelnut cookies**
-  - **Chocolate walnut cookies**
-  - **Chocolate cashew cookies**
-  - **Chocolate fractyl cookies**
+  - Fractyl cookies
+  - Red velvet cookies
+  - Compact discs
+  - Inverted cookies
+  - Sausage rolls
+  - Triple chocolate cookies
+  - Chocolate peanut butter cookies
+  - Chocolate coconut cookies
+  - Chocolate almond cookies
+  - Chocolate hazelnut cookies
+  - Chocolate walnut cookies
+  - Chocolate cashew cookies
+  - Chocolate fractyl cookies
 - One new heavenly upgrade:
-  - **Packet of chocolate cookies**
+  - Packet of chocolate cookies
 - Four new regular achievements:
-  - **Self-sacrifice**
-  - **Fibonacci**
-  - **Golden combination**
-  - **Golden triple**
+  - Self-sacrifice
+  - Fibonacci
+  - Golden combination
+  - Golden triple
 - Four new shadow achievements: 
-  - **Regular person complex**
-  - **Really?**
-  - **Pretty pink priorities**
-  - **When the cookies ascend just nice**
+  - Regular person complex
+  - Really?
+  - Pretty pink priorities
+  - When the cookies ascend just nice
 - Removes Herobrine
 ## How to use
 ### Option 1. Console
