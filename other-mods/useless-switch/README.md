@@ -8,4 +8,5 @@ It does nothing. Its only purpose is to increase the total number of switches in
 Paste this code into your browser console: `Game.LoadMod("https://fractylizer.github.io/fractylcookie/other-mods/useless-switch/switch.js")`
 ### Option 2. Bookmarklet
 Create a bookmark with this URL: `javascript: (function(){Game.LoadMod("https://fractylizer.github.io/fractylcookie/other-mods/useless-switch/switch.js");}());`
+
 Click on the bookmark to activate the mod.

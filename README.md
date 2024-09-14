@@ -34,8 +34,13 @@
 Paste this code into your browser console: `Game.LoadMod("https://fractylizer.github.io/fractylcookie/fractylcookie.js")`
 ### Option 2. Bookmarklet
 Create a bookmark with this URL: `javascript: (function(){Game.LoadMod("https://fractylizer.github.io/fractylcookie/fractylcookie.js");}());`
+
 Click on the bookmark to activate the mod.
 ## More stuff
 This repository also contains some other, smaller mods.
-[elessclessmless](other-mods/elessclessmless/README.md)
-[useless-switch](other-mods/useless-switch/README.md)
+
+[elessclessmless](other-mods/elessclessmless/README.md): ECM but much easier.
+
+[useless-switch](other-mods/useless-switch/README.md): Adds a useless switch.
+
+[remove-gap](other-mods/useless-switch/README.md): Removes the Affluent bakery/Mass producer icon gap.
