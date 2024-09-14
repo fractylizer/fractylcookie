@@ -158,21 +158,26 @@ Game.registerMod('fractylCookie',{
     this.addLevel20Achievement("Barnyard fever", "Reach level <b>20</b> farms.",[2,27],'Farm',1221);
     this.addLevel20Achievement("Between a rock and a hard place", "Reach level <b>20</b> mines.",[3,27],'Mine',1321);
     this.addLevel20Achievement("", "Reach level <b>20</b> mines.",[4,27],'Factory',1421);
-/*
+
     // update levelup function and check levels
     Object.keys(Game.Objects).forEach((key) => {
       let obj = Game.Objects[key];
-      obj.levelUp = Function('me',
-        `return ${obj.levelUp.toString().replace(
-          `if (me.level>=10 && me.levelAchiev10) Game.Win(me.levelAchiev10.name);`,
-          `if (me.level>=10 && me.levelAchiev10) Game.Win(me.levelAchiev10.name);
-          if (me.level>=20 && me.levelAchiev20) Game.Win(me.levelAchiev20.name);`
-        )//.replace(/^function[^{]+{/i,"").replace(/}[^}]*$/i, "")
-        }`
-      )
-      if (obj.level>=20 && obj.levelAchiev20) Game.Win(obj.levelAchiev20.name);
+      obj.levelUp = function(me){
+				return function(free){Game.spendLump(me.level+1,loc("level up your %1",me.plural),function()
+				{
+					me.level+=1;
+					if (me.level>=10 && me.levelAchiev10) Game.Win(me.levelAchiev10.name);
+					if (me.level>=20 && me.levelAchiev20) Game.Win(me.levelAchiev20.name);
+					if (!free) PlaySound('snd/upgrade.mp3',0.6);
+					Game.LoadMinigames();
+					me.refresh();
+					if (l('productLevel'+me.id)){var rect=l('productLevel'+me.id).getBounds();Game.SparkleAt((rect.left+rect.right)/2,(rect.top+rect.bottom)/2-24+32-TopBarOffset);}
+					if (me.minigame && me.minigame.onLevel) me.minigame.onLevel(me.level);
+				},free)();};
+			}(obj);
+      if (obj.level>=20 && obj.levelAchiev20 && Game.Achievements['Old-fashioned'].won == 0) Game.Win(obj.levelAchiev20.name);
     });
-*/
+
     LocalizeUpgradesAndAchievs();
   },
   checkAchievements:function() {
