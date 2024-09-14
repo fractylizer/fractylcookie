@@ -18,6 +18,7 @@ Game.registerMod('fractylCookie',{
   },
   load:function(str){
     var data = str;
+    console.log(data)
     let dataAch = str.split("|")[0]
     let dataUpg = str.split("|")[1]
     let dataFM = str.split("|")[2]
@@ -50,6 +51,7 @@ Game.registerMod('fractylCookie',{
   addCookieUpgrade:function(obj,upgorder){
     this.upgrades.push(Game.NewUpgradeCookie(obj));
     Game.last.order = upgorder;
+    Game.cookieUpgrades.push(Game.last);
   },
   addPrestigeUpgrade:function(name,desc,cost,icon,parents,order){
     this.upgrades.push(new Game.Upgrade(name,desc,cost,icon))
@@ -68,7 +70,6 @@ Game.registerMod('fractylCookie',{
   upgrades: [],
   fractylMode:function(activate){
     if (activate == 1) {
-      console.log()
       Game.Loader.Replace('wrinkler.png',`https://fractylizer.github.io/fractylcookie/img/wrinkler.png`);
       Game.Loader.Replace('perfectCookie.png',`https://fractylizer.github.io/fractylcookie/img/perfectCookie.png`);
     } else if (activate == 0) {
@@ -79,15 +80,13 @@ Game.registerMod('fractylCookie',{
   create:function() {
     Game.NewUpgradeCookie=function(obj)
 		{
-      console.log(obj.name);
 			var upgrade=new Game.Upgrade(obj.name,loc("Cookie production multiplier <b>+%1%</b>.",'[x]').replace('[x]',Beautify((typeof(obj.power)==='function'?obj.power(obj):obj.power)))+(EN?'<q>'+obj.desc+'</q>':''),obj.price,obj.icon);
 			upgrade.power=obj.power;
 			upgrade.pool='cookie';
 			var toPush={cookies:obj.price/20,name:obj.name};
-			if (obj.require) toPush.require=obj.require;console.log('require');
+			if (obj.require) toPush.require=obj.require;
 			if (obj.season) toPush.season=obj.season;
-			if (!obj.locked) Game.UnlockAt.push(toPush);console.log('unlockat');console.log(toPush);upgrade.unlockAt = toPush;
-      console.log(upgrade)
+			if (!obj.locked) Game.UnlockAt.push(toPush);upgrade.unlockAt = toPush;
 			return upgrade;
 		}
     Game.Objects['You'].sellFunction=function(){Game.Win('Self-sacrifice')}
@@ -154,22 +153,26 @@ Game.registerMod('fractylCookie',{
     this.addAchievement("Really-er?", "Use the <b>Extra-er Content-er Mod-er</b>.<q>You're gonna need thousands of frames per second, an autoclicker, and a LOT of free time.</q>",[5,0,this.icons],69423,'shadow');
     this.addAchievement("Really-less?", "Use the <b>Extra-less Content-less Mod-less</b>.<q>For the normal ones among us.</q>",[6,0,this.icons],69424,'shadow');
 
-    this.addLevel20Achievement("Double thumbs up", "Reach level <b>20</b> cursors.",[0,27],'Cursor',2521);
-    this.addLevel20Achievement("Old-fashioned", "Reach level <b>20</b> grandmas.",[1,27],'Grandma',2521);
-
+    this.addLevel20Achievement("Double thumbs up", "Reach level <b>20</b> cursors.",[0,27],'Cursor',1071);
+    this.addLevel20Achievement("Old-fashioned", "Reach level <b>20</b> grandmas.",[1,27],'Grandma',1121);
+    this.addLevel20Achievement("Barnyard fever", "Reach level <b>20</b> farms.",[2,27],'Farm',1221);
+    this.addLevel20Achievement("Between a rock and a hard place", "Reach level <b>20</b> mines.",[3,27],'Mine',1321);
+    this.addLevel20Achievement("", "Reach level <b>20</b> mines.",[4,27],'Factory',1421);
+/*
     // update levelup function and check levels
     Object.keys(Game.Objects).forEach((key) => {
       let obj = Game.Objects[key];
-      obj.levelUp = Function(
-        `(${obj.levelUp.toString().replace(
+      obj.levelUp = Function('me',
+        `return ${obj.levelUp.toString().replace(
           `if (me.level>=10 && me.levelAchiev10) Game.Win(me.levelAchiev10.name);`,
           `if (me.level>=10 && me.levelAchiev10) Game.Win(me.levelAchiev10.name);
           if (me.level>=20 && me.levelAchiev20) Game.Win(me.levelAchiev20.name);`
-        )})();`
+        )//.replace(/^function[^{]+{/i,"").replace(/}[^}]*$/i, "")
+        }`
       )
       if (obj.level>=20 && obj.levelAchiev20) Game.Win(obj.levelAchiev20.name);
     });
-
+*/
     LocalizeUpgradesAndAchievs();
   },
   checkAchievements:function() {
