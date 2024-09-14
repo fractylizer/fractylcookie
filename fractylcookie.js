@@ -44,8 +44,7 @@ Game.registerMod('fractylCookie',{
     Game.last.order = achorder;
   },
   addLevel20Achievement:function(name,desc,icon,obj,achorder) {
-    this.achievements.push(new Game.Achievement(name,desc,icon))
-    Game.last.order = achorder;
+    this.addAchievement(name,desc,icon,achorder,'normal')
     Game.Objects[obj].levelAchiev20 = Game.last;
   },
   addCookieUpgrade:function(obj,upgorder){
@@ -53,7 +52,7 @@ Game.registerMod('fractylCookie',{
     Game.last.order = upgorder;
     Game.cookieUpgrades.push(Game.last);
   },
-  addPrestigeUpgrade:function(name,desc,cost,icon,parents,order){
+  addPrestigeUpgrade:function(name,desc,cost,icon,parents,order,posx,posy){
     this.upgrades.push(new Game.Upgrade(name,desc,cost,icon))
     Game.last.pool = 'prestige';
     let newParents = parents.map(function(e) { 
@@ -62,8 +61,8 @@ Game.registerMod('fractylCookie',{
     });
     Game.last.parents = newParents;
     Game.last.order = order;
-    Game.last.posX=50
-    Game.last.posY=-200
+    Game.last.posX=posx
+    Game.last.posY=posy
     Game.PrestigeUpgrades.push(Game.last)
   },
   achievements: [],
@@ -117,7 +116,7 @@ Game.registerMod('fractylCookie',{
     let chocPacket = 'Packet of chocolate cookies'
 		this.addPrestigeUpgrade(chocPacket,loc("Contains an assortment of chocolate cookies.")
     +'<q>If it ain\'t broke, create a chocolate version!</q>',25,[5,1,this.icons],['Heavenly cookies'],0.1);
-    Game.Upgrades['Starter kit'].parents.push(Game.Upgrades[chocPacket])
+    Game.Upgrades['Starter kit'].parents.push(Game.Upgrades[chocPacket],50,-200)
 
     this.addCookieUpgrade({name:'Chocolate peanut butter cookies',desc:'A common form of the chocolate cookie. Made using fresh chocolate peanuts.',icon:[3,3,this.icons],require:chocPacket,power:2,price:200000000},10033)
     this.addCookieUpgrade({name:'Chocolate coconut cookies',desc:'These are more common in cake form. Feel free to berate the inventor for not dubbing them "cocoacoconut cookies".',icon:[2,2,this.icons],require:chocPacket,power:2,price:200000000},10033.01)
@@ -193,7 +192,7 @@ Game.registerMod('fractylCookie',{
 			}(obj);
       if (obj.level>=20 && obj.levelAchiev20 && obj.levelAchiev20.won == 0) Game.Win(obj.levelAchiev20.name);
     });
-
+    
     LocalizeUpgradesAndAchievs();
   },
   checkAchievements:function() {
