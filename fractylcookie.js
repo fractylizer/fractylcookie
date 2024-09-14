@@ -153,11 +153,27 @@ Game.registerMod('fractylCookie',{
     this.addAchievement("Really-er?", "Use the <b>Extra-er Content-er Mod-er</b>.<q>You're gonna need thousands of frames per second, an autoclicker, and a LOT of free time.</q>",[5,0,this.icons],69423,'shadow');
     this.addAchievement("Really-less?", "Use the <b>Extra-less Content-less Mod-less</b>.<q>For the normal ones among us.</q>",[6,0,this.icons],69424,'shadow');
 
+    // Level 20 achievements
     this.addLevel20Achievement("Double thumbs up", "Reach level <b>20</b> cursors.",[0,27],'Cursor',1071);
     this.addLevel20Achievement("Old-fashioned", "Reach level <b>20</b> grandmas.",[1,27],'Grandma',1121);
     this.addLevel20Achievement("Barnyard fever", "Reach level <b>20</b> farms.",[2,27],'Farm',1221);
     this.addLevel20Achievement("Between a rock and a hard place", "Reach level <b>20</b> mines.",[3,27],'Mine',1321);
-    this.addLevel20Achievement("", "Reach level <b>20</b> mines.",[4,27],'Factory',1421);
+    this.addLevel20Achievement("Solar cogs", "Reach level <b>20</b> factories.",[4,27],'Factory',1421);
+    this.addLevel20Achievement("Dollars on the penny", "Reach level <b>20</b> banks.",[15,27],'Bank',1446);
+    this.addLevel20Achievement("Escalator to heaven", "Reach level <b>20</b> temples.",[16,27],'Temple',1471);
+    this.addLevel20Achievement("Wonderful wizards of wonderful wizardry", "Reach level <b>20</b> wizard towers.",[17,27],'Wizard tower',1496);
+    this.addLevel20Achievement("Intergalactic planetary", "Reach level <b>20</b> shipments.",[5,27],'Shipment',1521);
+    this.addLevel20Achievement("In a pot nine days old", "Reach level <b>20</b> alchemy labs.",[6,27],'Alchemy lab',1621);
+    this.addLevel20Achievement("Remote getaway", "Reach level <b>20</b> portals.",[7,27],'Portal',1721);
+    this.addLevel20Achievement("Blast to and from the past", "Reach level <b>20</b> time machines.",[8,27],'Time machine',1821);
+    this.addLevel20Achievement("Antimattermentarianism", "Reach level <b>20</b> antimatter condensers.",[13,27],'Antimatter condenser',1921);
+    this.addLevel20Achievement("Faster than light", "Reach level <b>20</b> prisms.",[14,27],'Prism',2021);
+    this.addLevel20Achievement("You never know", "Reach level <b>20</b> chancemakers.",[19,27],'Chancemaker',2121);
+    this.addLevel20Achievement("Each solar system an atom", "Reach level <b>20</b> fractal engines.",[19,27],'Fractal engine',2121);
+    this.addLevel20Achievement("Forward compatibility", "Reach level <b>20</b> javascript consoles.",[32,27],'Javascript console',2321);
+    this.addLevel20Achievement("Hyperbolic space", "Reach level <b>20</b> idleverses.",[33,27],'Idleverse',2421);
+    this.addLevel20Achievement("Just think about it", "Reach level <b>20</b> cortex bakers.",[34,27],'Cortex baker',2521);
+    this.addLevel20Achievement("Group selfie", "Reach level <b>20</b> You.",[35,27],'You',2621);
 
     // update levelup function and check levels
     Object.keys(Game.Objects).forEach((key) => {

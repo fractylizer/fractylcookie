@@ -18,11 +18,12 @@
   - Chocolate fractyl cookies
 - One new heavenly upgrade:
   - Packet of chocolate cookies
-- Four new regular achievements:
+- Twenty-four new regular achievements:
   - Self-sacrifice
   - Fibonacci
   - Golden combination
   - Golden triple
+  - plus twenty level 20 achievements!
 - Four new shadow achievements: 
   - Regular person complex
   - Really?
