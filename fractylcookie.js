@@ -169,7 +169,7 @@ Game.registerMod('fractylCookie',{
     this.addLevel20Achievement("Antimattermentarianism", "Reach level <b>20</b> antimatter condensers.",[13,27],'Antimatter condenser',1921);
     this.addLevel20Achievement("Faster than light", "Reach level <b>20</b> prisms.",[14,27],'Prism',2021);
     this.addLevel20Achievement("You never know", "Reach level <b>20</b> chancemakers.",[19,27],'Chancemaker',2121);
-    this.addLevel20Achievement("Each solar system an atom", "Reach level <b>20</b> fractal engines.",[19,27],'Fractal engine',2121);
+    this.addLevel20Achievement("Each solar system an atom", "Reach level <b>20</b> fractal engines.",[20,27],'Fractal engine',2221);
     this.addLevel20Achievement("Forward compatibility", "Reach level <b>20</b> javascript consoles.",[32,27],'Javascript console',2321);
     this.addLevel20Achievement("Hyperbolic space", "Reach level <b>20</b> idleverses.",[33,27],'Idleverse',2421);
     this.addLevel20Achievement("Just think about it", "Reach level <b>20</b> cortex bakers.",[34,27],'Cortex baker',2521);
@@ -191,7 +191,7 @@ Game.registerMod('fractylCookie',{
 					if (me.minigame && me.minigame.onLevel) me.minigame.onLevel(me.level);
 				},free)();};
 			}(obj);
-      if (obj.level>=20 && obj.levelAchiev20 && Game.Achievements['Old-fashioned'].won == 0) Game.Win(obj.levelAchiev20.name);
+      if (obj.level>=20 && obj.levelAchiev20 && obj.levelAchiev20.won == 0) Game.Win(obj.levelAchiev20.name);
     });
 
     LocalizeUpgradesAndAchievs();
