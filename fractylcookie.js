@@ -160,11 +160,13 @@ Game.registerMod('fractylCookie',{
     // update levelup function and check levels
     Object.keys(Game.Objects).forEach((key) => {
       let obj = Game.Objects[key];
-      obj.levelUp.replace(
-      `if (me.level>=10 && me.levelAchiev10) Game.Win(me.levelAchiev10.name);`,
-      `if (me.level>=10 && me.levelAchiev10) Game.Win(me.levelAchiev10.name);
-      if (me.level>=20 && me.levelAchiev20) Game.Win(me.levelAchiev20.name);`
-      );
+      obj.levelUp = Function(
+        `(${obj.levelUp.toString().replace(
+          `if (me.level>=10 && me.levelAchiev10) Game.Win(me.levelAchiev10.name);`,
+          `if (me.level>=10 && me.levelAchiev10) Game.Win(me.levelAchiev10.name);
+          if (me.level>=20 && me.levelAchiev20) Game.Win(me.levelAchiev20.name);`
+        )})();`
+      )
       if (obj.level>=20 && obj.levelAchiev20) Game.Win(obj.levelAchiev20.name);
     });
 
