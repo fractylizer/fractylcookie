@@ -94,6 +94,24 @@ Game.registerMod('fractylCookie',{
     `)
     this.createAchievements()
     this.createUpgrades()
+    
+    // Update levelUp function
+    Object.keys(Game.Objects).forEach((key) => {
+      let obj = Game.Objects[key];
+      obj.levelUp = function(me){
+				return function(free){Game.spendLump(me.level+1,loc("level up your %1",me.plural),function()
+				{
+					me.level+=1;
+					if (me.level>=10 && me.levelAchiev10) Game.Win(me.levelAchiev10.name);
+					if (me.level>=20 && me.levelAchiev20) Game.Win(me.levelAchiev20.name);
+					if (!free) PlaySound('snd/upgrade.mp3',0.6);
+					Game.LoadMinigames();
+					me.refresh();
+					if (l('productLevel'+me.id)){var rect=l('productLevel'+me.id).getBounds();Game.SparkleAt((rect.left+rect.right)/2,(rect.top+rect.bottom)/2-24+32-TopBarOffset);}
+					if (me.minigame && me.minigame.onLevel) me.minigame.onLevel(me.level);
+				},free)();};
+			}(obj);
+    });
   },
   check:function() {
     Game.mods['fractylCookie'].checkAchievements();
@@ -118,6 +136,7 @@ Game.registerMod('fractylCookie',{
     +'<q>If it ain\'t broke, create a chocolate version!</q>',25,[5,1,this.icons],['Heavenly cookies'],0.1);
     Game.Upgrades['Starter kit'].parents.push(Game.Upgrades[chocPacket],50,-200)
 
+    // Chocolate cookies
     this.addCookieUpgrade({name:'Chocolate peanut butter cookies',desc:'A common form of the chocolate cookie. Made using fresh chocolate peanuts.',icon:[3,3,this.icons],require:chocPacket,power:2,price:200000000},10033)
     this.addCookieUpgrade({name:'Chocolate coconut cookies',desc:'These are more common in cake form. Feel free to berate the inventor for not dubbing them "cocoacoconut cookies".',icon:[2,2,this.icons],require:chocPacket,power:2,price:200000000},10033.01)
     this.addCookieUpgrade({name:'Chocolate almond cookies',desc:'Similar in appearance to a chocolated-covered almond with too much chocolate.',icon:[4,2,this.icons],require:chocPacket,power:2,price:200000000},10033.02)
@@ -157,7 +176,7 @@ Game.registerMod('fractylCookie',{
     this.addLevel20Achievement("Old-fashioned", "Reach level <b>20</b> grandmas.",[1,27],'Grandma',1121);
     this.addLevel20Achievement("Barnyard fever", "Reach level <b>20</b> farms.",[2,27],'Farm',1221);
     this.addLevel20Achievement("Between a rock and a hard place", "Reach level <b>20</b> mines.",[3,27],'Mine',1321);
-    this.addLevel20Achievement("Solar cogs", "Reach level <b>20</b> factories.",[4,27],'Factory',1421);
+    this.addLevel20Achievement("One million gears", "Reach level <b>20</b> factories.<q>And spinning things.</q>",[4,27],'Factory',1421);
     this.addLevel20Achievement("Dollars on the penny", "Reach level <b>20</b> banks.",[15,27],'Bank',1446);
     this.addLevel20Achievement("Escalator to heaven", "Reach level <b>20</b> temples.",[16,27],'Temple',1471);
     this.addLevel20Achievement("Wonderful wizards of wonderful wizardry", "Reach level <b>20</b> wizard towers.",[17,27],'Wizard tower',1496);
@@ -174,25 +193,6 @@ Game.registerMod('fractylCookie',{
     this.addLevel20Achievement("Just think about it", "Reach level <b>20</b> cortex bakers.",[34,27],'Cortex baker',2521);
     this.addLevel20Achievement("Group selfie", "Reach level <b>20</b> You.",[35,27],'You',2621);
 
-    // update levelup function and check levels
-    Object.keys(Game.Objects).forEach((key) => {
-      let obj = Game.Objects[key];
-      obj.levelUp = function(me){
-				return function(free){Game.spendLump(me.level+1,loc("level up your %1",me.plural),function()
-				{
-					me.level+=1;
-					if (me.level>=10 && me.levelAchiev10) Game.Win(me.levelAchiev10.name);
-					if (me.level>=20 && me.levelAchiev20) Game.Win(me.levelAchiev20.name);
-					if (!free) PlaySound('snd/upgrade.mp3',0.6);
-					Game.LoadMinigames();
-					me.refresh();
-					if (l('productLevel'+me.id)){var rect=l('productLevel'+me.id).getBounds();Game.SparkleAt((rect.left+rect.right)/2,(rect.top+rect.bottom)/2-24+32-TopBarOffset);}
-					if (me.minigame && me.minigame.onLevel) me.minigame.onLevel(me.level);
-				},free)();};
-			}(obj);
-      if (obj.level>=20 && obj.levelAchiev20 && obj.levelAchiev20.won == 0) Game.Win(obj.levelAchiev20.name);
-    });
-    
     LocalizeUpgradesAndAchievs();
   },
   checkAchievements:function() {
