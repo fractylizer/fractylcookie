@@ -23,7 +23,8 @@
   - Fibonacci
   - Golden combination
   - Golden triple
-  - plus twenty level 20 achievements!
+  - plus 19 tiered building achievements!
+  - and twenty level 20 achievements!
 - Four new shadow achievements: 
   - Regular person complex
   - Really?
