@@ -43,6 +43,12 @@ Game.registerMod('fractylCookie',{
     }
     Game.last.order = achorder;
   },
+  addTieredAchievement(name,desc,building,tier,icon,achorder){
+    console.log(building)
+    this.achievements.push(new Game.Achievement(name,loc("Have <b>%1</b>.",loc("%1 "+Game.Objects[building].bsingle,LBeautify(Game.Tiers[tier].achievUnlock)))+desc,icon));
+    Game.SetTier(building,tier);
+    Game.last.order = achorder;
+  },
   addLevel20Achievement:function(name,desc,icon,obj,achorder) {
     this.addAchievement(name,desc,icon,achorder,'normal')
     Game.Objects[obj].levelAchiev20 = Game.last;
@@ -77,6 +83,7 @@ Game.registerMod('fractylCookie',{
     }
   },
   create:function() {
+    Game.Tiers[16]={name:'Stellarbutter',unlock:650,achievUnlock:750,iconRow:0,color:'#526f4d',price:500000000000000000000000000000000000000000000}
     Game.NewUpgradeCookie=function(obj)
 		{
 			var upgrade=new Game.Upgrade(obj.name,loc("Cookie production multiplier <b>+%1%</b>.",'[x]').replace('[x]',Beautify((typeof(obj.power)==='function'?obj.power(obj):obj.power)))+(EN?'<q>'+obj.desc+'</q>':''),obj.price,obj.icon);
@@ -181,7 +188,7 @@ Game.registerMod('fractylCookie',{
     this.addLevel20Achievement("Escalator to heaven", "Reach level <b>20</b> temples.",[16,27],'Temple',1471);
     this.addLevel20Achievement("Wonderful wizards of wonderful wizardry", "Reach level <b>20</b> wizard towers.",[17,27],'Wizard tower',1496);
     this.addLevel20Achievement("Intergalactic planetary", "Reach level <b>20</b> shipments.",[5,27],'Shipment',1521);
-    this.addLevel20Achievement("In a pot nine days old", "Reach level <b>20</b> alchemy labs.",[6,27],'Alchemy lab',1621);
+    this.addLevel20Achievement("Elementary", "Reach level <b>20</b> alchemy labs.",[6,27],'Alchemy lab',1621);
     this.addLevel20Achievement("Remote getaway", "Reach level <b>20</b> portals.",[7,27],'Portal',1721);
     this.addLevel20Achievement("Blast to and from the past", "Reach level <b>20</b> time machines.",[8,27],'Time machine',1821);
     this.addLevel20Achievement("Antimattermentarianism", "Reach level <b>20</b> antimatter condensers.",[13,27],'Antimatter condenser',1921);
@@ -192,6 +199,28 @@ Game.registerMod('fractylCookie',{
     this.addLevel20Achievement("Hyperbolic space", "Reach level <b>20</b> idleverses.",[33,27],'Idleverse',2421);
     this.addLevel20Achievement("Just think about it", "Reach level <b>20</b> cortex bakers.",[34,27],'Cortex baker',2521);
     this.addLevel20Achievement("Group selfie", "Reach level <b>20</b> You.",[35,27],'You',2621);
+
+    // Extra tiered achievements
+    //this.addAchievement("Hands-on experience",loc("Have <b>%1</b>.",loc("%1 cursor",LBeautify(1100))),[0,30],1051)
+    this.addTieredAchievement("Like wine", "","Grandma",16,[1,4,this.icons],1101);
+    this.addTieredAchievement("Plow down", "","Farm",16,[2,4,this.icons],1201);
+    this.addTieredAchievement("Buried treasure", "","Mine",16,[3,4,this.icons],1301);
+    this.addTieredAchievement("Kuiper conveyor belt", "","Factory",16,[4,4,this.icons],1401);
+    this.addTieredAchievement("Must be funny", "","Bank",16,[15,4,this.icons],1426);
+    this.addTieredAchievement("Pray by pray", "","Temple",16,[16,4,this.icons],1451);
+    this.addTieredAchievement("We love casting spells", "","Wizard tower",16,[17,4,this.icons],1476);
+    this.addTieredAchievement("Such a timeless flight", "","Shipment",16,[5,4,this.icons],1501);
+    this.addTieredAchievement("Qualitative and quantitative", "","Alchemy lab",16,[6,4,this.icons],1601);
+    this.addTieredAchievement("Both shadow and substance", "","Portal",16,[7,4,this.icons],1701);
+    this.addTieredAchievement("A time a dozen", "","Time machine",16,[8,4,this.icons],1801);
+    this.addTieredAchievement("Strike that, reverse it", "","Antimatter condenser",16,[13,4,this.icons],1901);
+    this.addTieredAchievement("A lightbulb moment", "","Prism",16,[14,4,this.icons],2001);
+    this.addTieredAchievement("Head over tail", "","Chancemaker",16,[19,4,this.icons],2101);
+    this.addTieredAchievement("Cantor icing sugar", "","Fractal engine",16,[20,4,this.icons],2201);
+    this.addTieredAchievement("[object Object]", "<q>You may want to contact the author of this game.</q>","Javascript console",16,[21,4,this.icons],2301);
+    this.addTieredAchievement("Grand theft cosmos", "","Idleverse",16,[22,4,this.icons],2401);
+    this.addTieredAchievement("Brainiac", "","Cortex baker",16,[23,4,this.icons],2501);
+    this.addTieredAchievement("The more the merrier", "","You",16,[24,4,this.icons],2601);
 
     LocalizeUpgradesAndAchievs();
   },
