@@ -62,15 +62,6 @@ Game.registerMod('fractylCookie',{
     Game.last.order = upgorder;
     Game.last.icon = icon;
   },
-  /*addCustomBuildingUpgrade:function(name,desc,building,tier,upgorder,icon,mult){
-    let upg = Game.TieredUpgrade(name,desc,building,tier);
-    this.upgrades.push(upg);
-    Game.buildingMultiplierUpgrades.push(upg);
-    Game.last.order = upgorder;
-    Game.last.icon = icon;
-    Game.last.customMult = mult;
-    Game.last.building = building;
-  },*/
   addPrestigeUpgrade:function(name,desc,cost,icon,parents,order,posx,posy){
     this.upgrades.push(new Game.Upgrade(name,desc,cost,icon))
     Game.last.pool = 'prestige';
@@ -96,10 +87,8 @@ Game.registerMod('fractylCookie',{
     }
   },
   create:function() {
-    //Game.buildingMultiplierUpgrades = [];
     Game.Tiers[16]={name:'Stellarbutter',unlock:650,achievUnlock:750,iconRow:0,color:'#526f4d',price:500000000000000000000000000000000000000000000}
     Game.Tiers[17]={name:'Caramethyst',unlock:700,achievUnlock:800,iconRow:0,color:'#ddb466',price:5000000000000000000000000000000000000000000000000}
-    //this.addCustomBuildingMultipliers();
     Game.NewUpgradeCookie=function(obj)
 		{
 			var upgrade=new Game.Upgrade(obj.name,loc("Cookie production multiplier <b>+%1%</b>.",'[x]').replace('[x]',Beautify((typeof(obj.power)==='function'?obj.power(obj):obj.power)))+(EN?'<q>'+obj.desc+'</q>':''),obj.price,obj.icon);
@@ -145,31 +134,6 @@ Game.registerMod('fractylCookie',{
       for(let i of this.upgrades) {this.upgrades[i].bought = 0};
     }
   },
-  /*addCustomBuildingMultipliers:function(){
-    if (this.customMultipliersSetup) {return;}
-    if (!Game||!Game.GetTieredCpsMult) {console.warn('YOWZA!'); return;} //is there a game with a function? sure hope so
-    if (!Game.Objects || Object.keys(Game.Objects).length === 0) {console.warn('YEOWCH!'); return;} //are there buildings?
-    if (!Game.originalGetTieredCpsMult) {Game.originalGetTieredCpsMult = Game.GetTieredCpsMult;} //store the old function
-    Game.GetTieredCpsMult = function(me) {
-      if (!me || !me.name || !Game.originalGetTieredCpsMult) {return 1;} //invalid building or no old function
-      var mult = 1;
-      try {
-        mult = Game.originalGetTieredCpsMult(me);
-        if (typeof mult !== 'number' || isNaN(mult) || !isFinite(mult)) {mult = 1;} //stop errors in old function
-      } catch (e) {mult = 1;}
-      if (Game.buildingMultiplierUpgrades) {
-        for (var i = 0; i < Game.buildingMultiplierUpgrades.length; i++) {
-          var upgradeInfo = Game.buildingMultiplierUpgrades[i];
-          if (upgradeInfo && upgradeInfo.building === me.name && Game.Upgrades[upgradeInfo.name] && Game.Upgrades[upgradeInfo.name].bought) {
-            mult *= upgradeInfo.customMult;
-          }
-        }
-      }
-      if (typeof mult !== 'number' || isNaN(mult) || !isFinite(mult)) {mult = 1;}
-      return mult;
-    };
-    Game.customMultipliersSetup = true;
-  },*/
   createUpgrades:function() {
 
 		this.addCookieUpgrade({name:'Fractyl cookies',desc:'A mostly plain cookie, with a white chocolate logo. A delicious reminder to give Fractyl all your money.',icon:[0,1,this.icons],power:5,price:9999999999999999*5},10020.2575);
@@ -214,7 +178,6 @@ Game.registerMod('fractylCookie',{
     this.addCookieUpgrade({name:'Classic cookies',desc:'A relic of the very distant past.',icon:[6,1,this.icons],require:'Box of maybe cookies',power:5,price:Math.pow(10,51)},10051.1)
     this.addCookieUpgrade({name:'Eclairs',desc:'A thunderstorm is approaching! Quick, eat these fast before lightning strikes them!',icon:[7,1,this.icons],require:'Box of pastries',power:4,price:Math.pow(10,51)},10041.1)
 
-    //this.addCustomBuildingUpgrade("Duodecillion fingers","<q>Perfect for magic tricks or petty theft.</q>","Cursor",16,101,[0,4,this.icons],2)
 		this.addTieredUpgrade("Duodecillion fingers","<q>Perfect for magic tricks or petty theft.</q>","Cursor",16,101,[0,4,this.icons])
 		this.addTieredUpgrade("Knitting needles","<q>Gives your grandmas something to do with their hands and distracts them from doing other things that could harm cookie production. Idle hands are the devil's bakery.</q>","Grandma",16,201,[1,4,this.icons])
 		this.addTieredUpgrade("Hydration liquid","<q>Composed of a dangerous mixture of various chemicals. Contains some very questionable substances and a couple rare elements. It hydrates your plants just slightly better than water.</q>","Farm",16,301,[2,4,this.icons])
@@ -224,7 +187,7 @@ Game.registerMod('fractylCookie',{
 		this.addTieredUpgrade("Escalator to heaven","<q>No one wants to submit themselves to a religion for their whole life just to climb up an endless flight of stairs. Why not sweeten the deal a little bit?</q>","Temple",16,551,[16,4,this.icons])
 		this.addTieredUpgrade("Wizard hobbies","<q>If your wizards are going to be casting spells and summoning cookies day and night, they need time off to do other things, like crocheting or web development.</q>","Wizard tower",16,576,[17,4,this.icons])
 		this.addTieredUpgrade("Space origami","<q>Take a lightweight, flat piece of incredibly dense machinery and electronics and unfold it into a fully functioning spaceship! Alternatively, fold time and space up so that your shipments can travel across the universe in an instant or less.</q>","Shipment",16,601,[5,4,this.icons])
-		this.addTieredUpgrade("Recursive transmutation","<q>If you stop making cookies for one second, you can use alchemy to transmute your equipment into better equipment, and then use that equipment to transmute your equipment into even better equipment. Repeat these steps as many times as you like, but remember not to make your equipment so advanced that it can do your job better than you.</q>","Alchemy lab",16,701,[6,4,this.icons])
+		this.addTieredUpgrade("Recursive transmutation","<q>If you stop making cookies for a second, you can use alchemy to transmute your equipment into better equipment, and then use that equipment to transmute your equipment into even better equipment. Repeat these steps as many times as you like, but remember not to make your equipment so advanced that it can do your job better than you.</q>","Alchemy lab",16,701,[6,4,this.icons])
 		this.addTieredUpgrade("Three sided portals","<q>It's common knowledge that you enter a portal through one side and exit out the other, but recently discovered ancient tablets suggest that a secret third side exists. Where does it go? Let's find out.</q>","Portal",16,801,[7,4,this.icons])
 		this.addTieredUpgrade("Flashbacks","<q>As a power-saving measure, researchers have found an alternate method of travelling to the past. Next time someone vividly reminisces or ruminates, your time machines can quickly catch a ride and get flashed back with them.</q>","Time machine",16,901,[8,4,this.icons])
 		this.addTieredUpgrade("Antiantimatter","<q>The enemy of my enemy is my friend. And the opposite of the opposite of matter probably matters.</q>","Antimatter condenser",16,1001,[13,4,this.icons])
