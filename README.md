@@ -1,14 +1,17 @@
 # FractylCookie
 **A small, incomplete, bad, themeless Cookie Clicker mod.**
 ## Features
-- Adds the Fractyl logo to the big cookie and wrinklers
-- Thirteen new cookie upgrades: 
+- Adds the Fractyl logo to the big cookie and wrinklers (can be toggled for 1 cookie)
+- Adds a new tier of building upgrades
+- Fifteen new cookie upgrades: 
   - Fractyl cookies
   - Red velvet cookies
   - Compact discs
   - Inverted cookies
   - Sausage rolls
   - Triple chocolate cookies
+  - Classic cookies
+  - Eclairs
   - Chocolate peanut butter cookies
   - Chocolate coconut cookies
   - Chocolate almond cookies
@@ -23,11 +26,14 @@
   - Fibonacci
   - Golden combination
   - Golden triple
-  - plus 19 tiered building achievements!
+  - plus fourty tiered building achievements!
   - and twenty level 20 achievements!
-- Four new shadow achievements: 
+- Seven new shadow achievements: 
   - Regular person complex
   - Really?
+  - Really-er?
+  - Really-less?
+  - Really-plusplusplus?
   - Pretty pink priorities
   - When the cookies ascend just nice
 - Removes Herobrine
@@ -39,7 +45,7 @@ Create a bookmark with this URL: `javascript: (function(){Game.LoadMod("https://
 
 Click on the bookmark to activate the mod.
 ## More stuff
-This repository also contains some other, smaller mods.
+This repository also contains some other, smaller mods, for some reason.
 
 [elessclessmless](other-mods/elessclessmless/README.md): ECM but much easier.
 

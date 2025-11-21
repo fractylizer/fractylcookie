@@ -44,7 +44,6 @@ Game.registerMod('fractylCookie',{
     Game.last.order = achorder;
   },
   addTieredAchievement(name,desc,building,tier,icon,achorder){
-    console.log(building)
     this.achievements.push(new Game.Achievement(name,loc("Have <b>%1</b>.",loc("%1 "+Game.Objects[building].bsingle,LBeautify(Game.Tiers[tier].achievUnlock)))+desc,icon));
     Game.SetTier(building,tier);
     Game.last.order = achorder;
@@ -58,6 +57,20 @@ Game.registerMod('fractylCookie',{
     Game.last.order = upgorder;
     Game.cookieUpgrades.push(Game.last);
   },
+  addTieredUpgrade:function(name,desc,building,tier,upgorder,icon){
+    this.upgrades.push(Game.TieredUpgrade(name,desc,building,tier));
+    Game.last.order = upgorder;
+    Game.last.icon = icon;
+  },
+  /*addCustomBuildingUpgrade:function(name,desc,building,tier,upgorder,icon,mult){
+    let upg = Game.TieredUpgrade(name,desc,building,tier);
+    this.upgrades.push(upg);
+    Game.buildingMultiplierUpgrades.push(upg);
+    Game.last.order = upgorder;
+    Game.last.icon = icon;
+    Game.last.customMult = mult;
+    Game.last.building = building;
+  },*/
   addPrestigeUpgrade:function(name,desc,cost,icon,parents,order,posx,posy){
     this.upgrades.push(new Game.Upgrade(name,desc,cost,icon))
     Game.last.pool = 'prestige';
@@ -83,7 +96,10 @@ Game.registerMod('fractylCookie',{
     }
   },
   create:function() {
+    //Game.buildingMultiplierUpgrades = [];
     Game.Tiers[16]={name:'Stellarbutter',unlock:650,achievUnlock:750,iconRow:0,color:'#526f4d',price:500000000000000000000000000000000000000000000}
+    Game.Tiers[17]={name:'Caramethyst',unlock:700,achievUnlock:800,iconRow:0,color:'#ddb466',price:5000000000000000000000000000000000000000000000000}
+    //this.addCustomBuildingMultipliers();
     Game.NewUpgradeCookie=function(obj)
 		{
 			var upgrade=new Game.Upgrade(obj.name,loc("Cookie production multiplier <b>+%1%</b>.",'[x]').replace('[x]',Beautify((typeof(obj.power)==='function'?obj.power(obj):obj.power)))+(EN?'<q>'+obj.desc+'</q>':''),obj.price,obj.icon);
@@ -129,6 +145,31 @@ Game.registerMod('fractylCookie',{
       for(let i of this.upgrades) {this.upgrades[i].bought = 0};
     }
   },
+  /*addCustomBuildingMultipliers:function(){
+    if (this.customMultipliersSetup) {return;}
+    if (!Game||!Game.GetTieredCpsMult) {console.warn('YOWZA!'); return;} //is there a game with a function? sure hope so
+    if (!Game.Objects || Object.keys(Game.Objects).length === 0) {console.warn('YEOWCH!'); return;} //are there buildings?
+    if (!Game.originalGetTieredCpsMult) {Game.originalGetTieredCpsMult = Game.GetTieredCpsMult;} //store the old function
+    Game.GetTieredCpsMult = function(me) {
+      if (!me || !me.name || !Game.originalGetTieredCpsMult) {return 1;} //invalid building or no old function
+      var mult = 1;
+      try {
+        mult = Game.originalGetTieredCpsMult(me);
+        if (typeof mult !== 'number' || isNaN(mult) || !isFinite(mult)) {mult = 1;} //stop errors in old function
+      } catch (e) {mult = 1;}
+      if (Game.buildingMultiplierUpgrades) {
+        for (var i = 0; i < Game.buildingMultiplierUpgrades.length; i++) {
+          var upgradeInfo = Game.buildingMultiplierUpgrades[i];
+          if (upgradeInfo && upgradeInfo.building === me.name && Game.Upgrades[upgradeInfo.name] && Game.Upgrades[upgradeInfo.name].bought) {
+            mult *= upgradeInfo.customMult;
+          }
+        }
+      }
+      if (typeof mult !== 'number' || isNaN(mult) || !isFinite(mult)) {mult = 1;}
+      return mult;
+    };
+    Game.customMultipliersSetup = true;
+  },*/
   createUpgrades:function() {
 
 		this.addCookieUpgrade({name:'Fractyl cookies',desc:'A mostly plain cookie, with a white chocolate logo. A delicious reminder to give Fractyl all your money.',icon:[0,1,this.icons],power:5,price:9999999999999999*5},10020.2575);
@@ -138,10 +179,15 @@ Game.registerMod('fractylCookie',{
     this.addCookieUpgrade({name:'Sausage rolls',desc:'It\'s the pastry equivalent of a hotdog, so it stands out from the other pastries which are much more on-theme.',icon:[1,2,this.icons],require:'Box of pastries',power:4,price:Math.pow(10,49)},10041)
     this.addCookieUpgrade({name:'Triple chocolate cookies',desc:'White, milk, and dark. The end to all chocolate conflict, and the beginning of a bright future.',icon:[0,2,this.icons],power:4,price:9999999999*5},10003)
 
+    let upgradesToMove = {253:[-255,-214],254:[-105,-268],255:[-189,-266],326:[-277,-133],};
+    Object.keys(upgradesToMove).forEach(i => {
+      Game.UpgradesById[i].posX=upgradesToMove[i][0];Game.UpgradesById[i].posY=upgradesToMove[i][1];
+    })
+
     let chocPacket = 'Packet of chocolate cookies'
 		this.addPrestigeUpgrade(chocPacket,loc("Contains an assortment of chocolate cookies.")
-    +'<q>If it ain\'t broke, create a chocolate version!</q>',25,[5,1,this.icons],['Heavenly cookies'],0.1);
-    Game.Upgrades['Starter kit'].parents.push(Game.Upgrades[chocPacket],50,-200)
+    +'<q>If it ain\'t broke, create a chocolate version!</q>',25,[5,1,this.icons],['Heavenly cookies'],0.1,-36,-220);
+    Game.Upgrades['Starter kit'].parents.push(Game.last)
 
     // Chocolate cookies
     this.addCookieUpgrade({name:'Chocolate peanut butter cookies',desc:'A common form of the chocolate cookie. Made using fresh chocolate peanuts.',icon:[3,3,this.icons],require:chocPacket,power:2,price:200000000},10033)
@@ -164,6 +210,32 @@ Game.registerMod('fractylCookie',{
     Game.last.order = 50003;
     Game.Unlock('Fractyl switch [on]')
 
+    
+    this.addCookieUpgrade({name:'Classic cookies',desc:'A relic of the very distant past.',icon:[6,1,this.icons],require:'Box of maybe cookies',power:5,price:Math.pow(10,51)},10051.1)
+    this.addCookieUpgrade({name:'Eclairs',desc:'A thunderstorm is approaching! Quick, eat these fast before lightning strikes them!',icon:[7,1,this.icons],require:'Box of pastries',power:4,price:Math.pow(10,51)},10041.1)
+
+    //this.addCustomBuildingUpgrade("Duodecillion fingers","<q>Perfect for magic tricks or petty theft.</q>","Cursor",16,101,[0,4,this.icons],2)
+		this.addTieredUpgrade("Duodecillion fingers","<q>Perfect for magic tricks or petty theft.</q>","Cursor",16,101,[0,4,this.icons])
+		this.addTieredUpgrade("Knitting needles","<q>Gives your grandmas something to do with their hands and distracts them from doing other things that could harm cookie production. Idle hands are the devil's bakery.</q>","Grandma",16,201,[1,4,this.icons])
+		this.addTieredUpgrade("Hydration liquid","<q>Composed of a dangerous mixture of various chemicals. Contains some very questionable substances and a couple rare elements. It hydrates your plants just slightly better than water.</q>","Farm",16,301,[2,4,this.icons])
+		this.addTieredUpgrade("Motivational images","<q>Never give up, because you never know when you're one swing of a pickaxe away from an Olympic swimming pool worth of rare minerals.</q>","Mine",16,401,[3,4,this.icons])
+		this.addTieredUpgrade("Hyperpetual motion machine","<q>This machine doesn't just stay in constant motion forever, it speeds up as it moves, creating a source of energy that only gets more powerful over time.</q>","Factory",16,501,[4,4,this.icons])
+		this.addTieredUpgrade("French spacing","<q>This is when a space is added before any punctuation with two separate pieces. The rest of the text in this game is full of it, so why not add it into your legal documents to pad them out and make less people read them ?</q>","Bank",16,526,[15,4,this.icons])
+		this.addTieredUpgrade("Escalator to heaven","<q>No one wants to submit themselves to a religion for their whole life just to climb up an endless flight of stairs. Why not sweeten the deal a little bit?</q>","Temple",16,551,[16,4,this.icons])
+		this.addTieredUpgrade("Wizard hobbies","<q>If your wizards are going to be casting spells and summoning cookies day and night, they need time off to do other things, like crocheting or web development.</q>","Wizard tower",16,576,[17,4,this.icons])
+		this.addTieredUpgrade("Space origami","<q>Take a lightweight, flat piece of incredibly dense machinery and electronics and unfold it into a fully functioning spaceship! Alternatively, fold time and space up so that your shipments can travel across the universe in an instant or less.</q>","Shipment",16,601,[5,4,this.icons])
+		this.addTieredUpgrade("Recursive transmutation","<q>If you stop making cookies for one second, you can use alchemy to transmute your equipment into better equipment, and then use that equipment to transmute your equipment into even better equipment. Repeat these steps as many times as you like, but remember not to make your equipment so advanced that it can do your job better than you.</q>","Alchemy lab",16,701,[6,4,this.icons])
+		this.addTieredUpgrade("Three sided portals","<q>It's common knowledge that you enter a portal through one side and exit out the other, but recently discovered ancient tablets suggest that a secret third side exists. Where does it go? Let's find out.</q>","Portal",16,801,[7,4,this.icons])
+		this.addTieredUpgrade("Flashbacks","<q>As a power-saving measure, researchers have found an alternate method of travelling to the past. Next time someone vividly reminisces or ruminates, your time machines can quickly catch a ride and get flashed back with them.</q>","Time machine",16,901,[8,4,this.icons])
+		this.addTieredUpgrade("Antiantimatter","<q>The enemy of my enemy is my friend. And the opposite of the opposite of matter probably matters.</q>","Antimatter condenser",16,1001,[13,4,this.icons])
+		this.addTieredUpgrade("Wider wavelength range","<q>There's more light out there than what we can see. Infrared and ultraviolet light are mostly untapped sources, until now. One benefit of these is that they won't burn the retinas of your employees, but if you stray too far from the visible light spectrum you may encounter other, more dangerous consequences.</q>","Prism",16,1101,[14,4,this.icons])
+		this.addTieredUpgrade("Jinx manipulation","<q>Just talk about how probable it is that undesirable things could happen and how much you'd hate if something really great happened to you. I mean, words are just words, so you have nothing to worry about.</q>","Chancemaker",16,1201,[19,4,this.icons])
+		this.addTieredUpgrade("Inline frames","<q>That's odd. This browser game contains another, harder to use browser game.</q>","Fractal engine",16,1301,[20,4,this.icons])
+		this.addTieredUpgrade("Extended documentation","<q>Contains all the information you need in one place, including the information advanced web developers don't want you to know about.</q>","Javascript console",16,1401,[21,4,this.icons])
+		this.addTieredUpgrade("Activeverses","<q>Turns out that constantly paying attention to an idleverse and endlessly working to maximise output gives a pretty significant boost to its production. The benefits are so large that they're almost worth the immense effort.</q>","Idleverse",16,1501,[22,4,this.icons])
+		this.addTieredUpgrade("Brain teasers","<q>Thinking cookies into existence can become mundane and repetitive, so these activities for your cortex bakers will keep their neural pathways strong and healthy.</q>","Cortex baker",16,1601,[23,4,this.icons])
+		this.addTieredUpgrade("Asexual reproduction","<q>Plants have been cloning themselves for years, just do as they do and everything will be alright (except for all of the things that will be weird and disgusting).</q>","You",16,1701,[24,4,this.icons])
+
     LocalizeUpgradesAndAchievs();
   },
   createAchievements:function() {
@@ -185,7 +257,7 @@ Game.registerMod('fractylCookie',{
     this.addLevel20Achievement("Between a rock and a hard place", "Reach level <b>20</b> mines.",[3,27],'Mine',1321);
     this.addLevel20Achievement("One million gears", "Reach level <b>20</b> factories.<q>And spinning things.</q>",[4,27],'Factory',1421);
     this.addLevel20Achievement("Dollars on the penny", "Reach level <b>20</b> banks.",[15,27],'Bank',1446);
-    this.addLevel20Achievement("Escalator to heaven", "Reach level <b>20</b> temples.",[16,27],'Temple',1471);
+    this.addLevel20Achievement("Call of deity", "Reach level <b>20</b> temples.",[16,27],'Temple',1471);
     this.addLevel20Achievement("Wonderful wizards of wonderful wizardry", "Reach level <b>20</b> wizard towers.",[17,27],'Wizard tower',1496);
     this.addLevel20Achievement("Intergalactic planetary", "Reach level <b>20</b> shipments.",[5,27],'Shipment',1521);
     this.addLevel20Achievement("Elementary", "Reach level <b>20</b> alchemy labs.",[6,27],'Alchemy lab',1621);
@@ -200,8 +272,11 @@ Game.registerMod('fractylCookie',{
     this.addLevel20Achievement("Just think about it", "Reach level <b>20</b> cortex bakers.",[34,27],'Cortex baker',2521);
     this.addLevel20Achievement("Group selfie", "Reach level <b>20</b> You.",[35,27],'You',2621);
 
-    // Extra tiered achievements
-    //this.addAchievement("Hands-on experience",loc("Have <b>%1</b>.",loc("%1 cursor",LBeautify(1100))),[0,30],1051)
+    // Tiered achievements
+
+    //Stellarbutter
+    eval(`Game.Objects["Cursor"].buyFunction = ` + Game.Objects["Cursor"].buyFunction.toString().slice(0, -1).concat(`if (this.amount>=1100) Game.Win('Hands-on experience');if (this.amount>=1200) Game.Win('Gotta hand it to you');}`));
+    this.addAchievement("Hands-on experience",loc("Have <b>%1</b>.",loc("%1 cursor",LBeautify(1100))),[0,30],1051)
     this.addTieredAchievement("Like wine", "","Grandma",16,[1,4,this.icons],1101);
     this.addTieredAchievement("Plow down", "","Farm",16,[2,4,this.icons],1201);
     this.addTieredAchievement("Buried treasure", "","Mine",16,[3,4,this.icons],1301);
@@ -221,6 +296,30 @@ Game.registerMod('fractylCookie',{
     this.addTieredAchievement("Grand theft cosmos", "","Idleverse",16,[22,4,this.icons],2401);
     this.addTieredAchievement("Brainiac", "","Cortex baker",16,[23,4,this.icons],2501);
     this.addTieredAchievement("The more the merrier", "","You",16,[24,4,this.icons],2601);
+    
+    //Caramethyst
+    this.addAchievement("Gotta hand it to you",loc("Have <b>%1</b>.",loc("%1 cursor",LBeautify(1200))),[0,31],1052)
+    this.addTieredAchievement("Respect your elders", "","Grandma",17,[1,5,this.icons],1102);
+    this.addTieredAchievement("Industry plant", "","Farm",17,[2,5,this.icons],1202);
+    this.addTieredAchievement("Set in stone", "","Mine",17,[3,5,this.icons],1302);
+    this.addTieredAchievement("Kinetic energy", "","Factory",17,[4,5,this.icons],1402);
+    this.addTieredAchievement("Keep your hands off of my stack", "","Bank",17,[15,5,this.icons],1427); //A penny for your thoughts
+    this.addTieredAchievement("Cult classic", "","Temple",17,[16,5,this.icons],1452);
+    this.addTieredAchievement("Fireball", "","Wizard tower",17,[17,5,this.icons],1477);
+    this.addTieredAchievement("Across the universe", "","Shipment",17,[5,5,this.icons],1502);
+    this.addTieredAchievement("High melting point", "","Alchemy lab",17,[6,5,this.icons],1602);
+    this.addTieredAchievement("Otherworldly", "","Portal",17,[7,5,this.icons],1702);
+    this.addTieredAchievement("Hickory dickory dock", "","Time machine",17,[8,5,this.icons],1802);
+    this.addTieredAchievement("Audaseetee", "","Antimatter condenser",17,[13,5,this.icons],1902);
+    this.addTieredAchievement("The Shining", "","Prism",17,[14,5,this.icons],2002);
+    this.addTieredAchievement("Risking it all", "","Chancemaker",17,[19,5,this.icons],2102);
+    this.addTieredAchievement("Infinite zoom", "","Fractal engine",17,[20,5,this.icons],2202);
+    this.addTieredAchievement("Flip the script", "","Javascript console",17,[21,5,this.icons],2302);
+    this.addTieredAchievement("This one's for all the marbles", "","Idleverse",17,[22,5,this.icons],2402);
+    this.addTieredAchievement("Neuron activation", "","Cortex baker",17,[23,5,this.icons],2502);
+    this.addTieredAchievement("Make a supersonic man", "","You",17,[24,5,this.icons],2602);
+    
+    this.addAchievement("Really-plusplusplus?", "Use <b>ECMplusplusplus</b>.<q>This mod not only increases \"ECM\" by 1, but also has an extra plus for no reason.</q>",[5,0,this.icons],69425,'shadow');
 
     LocalizeUpgradesAndAchievs();
   },
@@ -236,6 +335,7 @@ Game.registerMod('fractylCookie',{
     if (Game.mods['extraContent'] !== undefined) {Game.Win('Really?')}
     if (Game.mods['Eercermer'] !== undefined) {Game.Win('Really-er?')}
     if (Game.mods['elessclessmless'] !== undefined) {Game.Win('Really-less?')}
+    if (Game.mods['ECMplusplusplus'] !== undefined) {Game.Win('Really-plusplusplus?')}
     let isafibonacci = 1;
     if (!Game.HasAchiev('Fibonacci')) {
       for (var i in Game.Objects) {
