@@ -22,7 +22,10 @@ Game.registerMod('fractylCookie',{
     let dataAch = str.split("|")[0]
     let dataUpg = str.split("|")[1]
     let dataFM = str.split("|")[2]
-    for(let i in dataAch) {this.achievements[i].won = Number(dataAch[i])}
+    for(let i in dataAch) {
+      this.achievements[i].won = Number(dataAch[i])
+      if (this.achievements[i].won == 1) {Game.AchievementsOwned++}
+    }
     for(let i in dataUpg) {this.upgrades[i].bought = Number(dataUpg[i])}
     if (dataFM == 1) {
       Game.Upgrades['Fractyl switch [off]'].bought = 1;
@@ -35,6 +38,7 @@ Game.registerMod('fractylCookie',{
       Game.Unlock('Fractyl switch [off]')
       this.fractylMode(0);
     }
+    if (Game.prefs.popups) Game.Popup("FractylCookie loaded!");
   },
   addAchievement:function(name,desc,icon,achorder,pool) {
     this.achievements.push(new Game.Achievement(name,desc,icon))
@@ -63,7 +67,7 @@ Game.registerMod('fractylCookie',{
     Game.last.icon = icon;
   },
   addPrestigeUpgrade:function(name,desc,cost,icon,parents,order,posx,posy){
-    this.upgrades.push(new Game.Upgrade(name,desc,cost,icon))
+    this.upgrades.push(new Game.Upgrade(name,desc,cost,icon));
     Game.last.pool = 'prestige';
     let newParents = parents.map(function(e) { 
       e = Game.Upgrades[e]; 
@@ -71,9 +75,14 @@ Game.registerMod('fractylCookie',{
     });
     Game.last.parents = newParents;
     Game.last.order = order;
-    Game.last.posX=posx
-    Game.last.posY=posy
-    Game.PrestigeUpgrades.push(Game.last)
+    Game.last.posX=posx;
+    Game.last.posY=posy;
+    Game.PrestigeUpgrades.push(Game.last);
+  },
+  addMilk:function(name,icon,pic,rank,type=0) {
+    let milkObj = {name:name,icon:icon,type:type,pic:pic,rank:rank,modded:true};
+    Game.AllMilks.push(milkObj);
+    Game.Milks.push(milkObj);
   },
   achievements: [],
   upgrades: [],
@@ -87,7 +96,7 @@ Game.registerMod('fractylCookie',{
     }
   },
   create:function() {
-    Game.Tiers[16]={name:'Stellarbutter',unlock:650,achievUnlock:750,iconRow:0,color:'#526f4d',price:500000000000000000000000000000000000000000000}
+    Game.Tiers[16]={name:'Stellarbutter',unlock:650,achievUnlock:750,iconRow:0,color:'#a97621',price:500000000000000000000000000000000000000000000}
     Game.Tiers[17]={name:'Caramethyst',unlock:700,achievUnlock:800,iconRow:0,color:'#ddb466',price:5000000000000000000000000000000000000000000000000}
     Game.NewUpgradeCookie=function(obj)
 		{
@@ -106,6 +115,13 @@ Game.registerMod('fractylCookie',{
     `)
     this.createAchievements()
     this.createUpgrades()
+    
+    // Add milks (Currently does not work with custom images. Fix this Orteil!!!!)
+    this.addMilk("Pistachio milk",[7,2,this.icons],"https://fractylizer.github.io/fractylcookie/img/milkPistachio.png",25)
+    this.addMilk("Peanut butter milk",[8,2,this.icons],"https://fractylizer.github.io/fractylcookie/img/milkPeanutButter.png",26)
+    this.addMilk("Lavender milk",[9,2,this.icons],"https://fractylizer.github.io/fractylcookie/img/milkLavender.png",27)
+    //(-milk.icon[0]*48)+'px '+(-milk.icon[1]*48)
+    eval(`Game.UpdateMenu = ` + Game.UpdateMenu.toString().replace(`'+(-milk.icon[0]*48)+'px '+(-milk.icon[1]*48)+'px;`,`;'+writeIcon(milk.icon)+'`).replace(`'+Game.resPath+'img/'+milk.pic+'`,`'+(milk.modded?milk.pic:Game.resPath+'img/'+milk.pic)+'`));
     
     // Update levelUp function
     Object.keys(Game.Objects).forEach((key) => {
@@ -178,6 +194,7 @@ Game.registerMod('fractylCookie',{
     this.addCookieUpgrade({name:'Classic cookies',desc:'A relic of the very distant past.',icon:[6,1,this.icons],require:'Box of maybe cookies',power:5,price:Math.pow(10,51)},10051.1)
     this.addCookieUpgrade({name:'Eclairs',desc:'A thunderstorm is approaching! Quick, eat these fast before lightning strikes them!',icon:[7,1,this.icons],require:'Box of pastries',power:4,price:Math.pow(10,51)},10041.1)
 
+    //Stellarbutter
 		this.addTieredUpgrade("Duodecillion fingers","<q>Perfect for magic tricks or petty theft.</q>","Cursor",16,101,[0,4,this.icons])
 		this.addTieredUpgrade("Knitting needles","<q>Gives your grandmas something to do with their hands and distracts them from doing other things that could harm cookie production. Idle hands are the devil's bakery.</q>","Grandma",16,201,[1,4,this.icons])
 		this.addTieredUpgrade("Hydration liquid","<q>Composed of a dangerous mixture of various chemicals. Contains some very questionable substances and a couple rare elements. It hydrates your plants just slightly better than water.</q>","Farm",16,301,[2,4,this.icons])
@@ -198,6 +215,29 @@ Game.registerMod('fractylCookie',{
 		this.addTieredUpgrade("Activeverses","<q>Turns out that constantly paying attention to an idleverse and endlessly working to maximise output gives a pretty significant boost to its production. The benefits are so large that they're almost worth the immense effort.</q>","Idleverse",16,1501,[22,4,this.icons])
 		this.addTieredUpgrade("Brain teasers","<q>Thinking cookies into existence can become mundane and repetitive, so these activities for your cortex bakers will keep their neural pathways strong and healthy.</q>","Cortex baker",16,1601,[23,4,this.icons])
 		this.addTieredUpgrade("Asexual reproduction","<q>Plants have been cloning themselves for years, just do as they do and everything will be alright (except for all of the things that will be weird and disgusting).</q>","You",16,1701,[24,4,this.icons])
+
+    //Caramethyst
+
+		this.addTieredUpgrade("Tredecillion fingers","<q>That's a lot of oddly named children.</q>","Cursor",17,102,[0,5,this.icons])
+		this.addTieredUpgrade("Family reunion","<q>That's a lot of grandmothers.</q>","Grandma",17,202,[1,5,this.icons])
+		this.addTieredUpgrade("All-encompassing irrigation","<q>Turns out cookie plants can grow underwater as well.</q>","Farm",17,302,[2,5,this.icons])
+		this.addTieredUpgrade("Subterranean amenities","<q>Give your miners some fresh water, fast food, and a place to live down there and they'll never need to come back up to the surface again.</q>","Mine",17,402,[3,5,this.icons])
+		this.addTieredUpgrade("Lubricant","<q>Keeps everything running smooth. Can't say there's much nuance to this.</q>","Factory",17,502,[4,5,this.icons])
+		this.addTieredUpgrade("Pecuniary ruminations","<q>When handling abstract concepts such as currency, it can be helpful to question the core nature of what defines it. What is money? Where is money? Why is money? Who is money? How is money? (Doing fine, actually.)</q>","Bank",17,527,[15,5,this.icons])
+		this.addTieredUpgrade("Divine enlightenment","<q>Give someone a revelation or an epiphany now and then and they might stick around a little longer.</q>","Temple",17,552,[16,5,this.icons])
+		this.addTieredUpgrade("Childlike wonder","<q>Due to their lack of understanding of the problems and perils of the world, children are inherently more cheerful and carefree, making them naturally accepting of and proficient in magic. Turns out it's easier to raise babies to become wizards from the start than it is to hire them as adults or let them be sad orphans for eleven years first.</q>","Wizard tower",17,577,[17,5,this.icons])
+		this.addTieredUpgrade("Really good spaceships","<q>Thanks.</q>","Shipment",17,602,[5,5,this.icons])
+		this.addTieredUpgrade("More alchemy","<q>And more lab.</q>","Alchemy lab",17,702,[6,5,this.icons])
+		this.addTieredUpgrade("Welcome mats","<q>Helps to keep any otherwordly residue from contaminating our world. Each one contains a little bit of fine print that specifies which creatures are and aren't welcomed.</q>","Portal",17,802,[7,5,this.icons])
+		this.addTieredUpgrade("Time travel defenses","<q>The present moment you live in is both the future and the past relative to other moments in time. It's inevitable that eventually, someone from another time will come and try to take your cookies back to their time. Best to set up a defense now than have your reserves stolen by another you from another time.</q>","Time machine",17,902,[8,5,this.icons])
+		this.addTieredUpgrade("Extra spatial dimension","<q>Turns out that beyond what we can see and experience, planes of existence lie parallel to ours, and each subatomic particle in our world is just where a larger object intersects with our plane. Thus, for each particle there exists more of the same hidden away, which can be extracted and used for whatever you wish. Let's hope any damage caused stays outside of our dimension.</q>","Antimatter condenser",17,1002,[13,5,this.icons])
+		this.addTieredUpgrade("Frequency isolation","<q>Turns out specific frequencies of light correspond to different ingredients and flavours in the cookies produced. By selecting the most desirable frequencies, you can create cookies that are perfect in every way. </q>","Prism",17,1102,[14,5,this.icons])
+		this.addTieredUpgrade("Spherical dice","<q>The probability of each point on the dice being landed on is zero, and yet the sphere must land on one of the points. Who knows what this emergent certainty of infinitesimally probable outcomes could lead to?</q>","Chancemaker",17,1202,[19,5,this.icons])
+		this.addTieredUpgrade("Inherent fractal properties","<q>As it turns out, even regular, run-of-the-mill cookies exhibit fractal-like properties. When measuring the \"coastline\" of a cookie, it increases the more precise your measurements become. This eventually leads to an infinite cookie perimeter, and they don't even have to be shaped like Great Britian.</q>","Fractal engine",17,1302,[20,5,this.icons])
+		this.addTieredUpgrade("Vibe coding","<q>It turns out that if you simply exude the vibes of someone who knows how to program in JavaScript, your code will be pressured into writing itself.</q>","Javascript console",17,1402,[21,5,this.icons])
+		this.addTieredUpgrade("Slight adjustments","<q>Turns out that a small difference in what a universe produces can have a big difference when coverting it all into cookies. This makes it useful to find slightly different versions of universes where whatever's being produces is infinitesimally more cookie-like. That could mean anything, whether a delayed train a hundred years ago made a universe produce statues of a slightly different composition, or a butterfly flapping its wings made a universe produce birthday cards that are slightly more radioactive.</q>","Idleverse",17,1502,[22,5,this.icons])
+		this.addTieredUpgrade("Shower thoughts","<q>Turns out washing your cortex bakers doesn't just keep them clean and looking good, the experience also stimulates brain activity, leading to higher cookie production.</q>","Cortex baker",17,1602,[23,5,this.icons])
+		this.addTieredUpgrade("Large-scale mitosis","<q>Since having your clones give birth to more clones wasn't freaky/efficient enough, new technological advances allow you to have every cell in a clone divide simultaneously, in order to create an exact copy without the whole birthing process. You might have your doubts as to whether this is actually possible but don't go asking questions you don't want to hear the answers to.</q>","You",17,1702,[24,5,this.icons])
 
     LocalizeUpgradesAndAchievs();
   },
@@ -281,8 +321,21 @@ Game.registerMod('fractylCookie',{
     this.addTieredAchievement("This one's for all the marbles", "","Idleverse",17,[22,5,this.icons],2402);
     this.addTieredAchievement("Neuron activation", "","Cortex baker",17,[23,5,this.icons],2502);
     this.addTieredAchievement("Make a supersonic man", "","You",17,[24,5,this.icons],2602);
+
+    //New achievement name ideas? Put them below
+    //Cursor: Handyman
+    //
+    //Shipment: Waiting in the sky, Houston we have a solution, Major Tom
+    //
+    //Time machine: Eighty-eight miles per hour
+    //
+    //Cortex baker: Outside brain, A person who thinks all the time
     
-    this.addAchievement("Really-plusplusplus?", "Use <b>ECMplusplusplus</b>.<q>This mod not only increases \"ECM\" by 1, but also has an extra plus for no reason.</q>",[5,0,this.icons],69425,'shadow');
+    this.addAchievement("Really-plusplusplus?", "Use <b>ECMplusplusplus</b>.<q>This mod not only increases \"ECM\" by 1, but also has an extra plus for no reason.</q>",[7,0,this.icons],69425,'shadow');
+
+    
+    this.addAchievement("Urban sprawl",loc("Own <b>%1</b>.",loc("%1 building",LBeautify(12500)))+'<q>Semi-baker\'s dozen thousand.</q>',[32,6],5010);
+    this.addAchievement("Stellar engineering",loc("Own <b>%1</b>.",loc("%1 building",LBeautify(15000)))+'<q>Truly stunning.</q>',[33,6],5020);
 
     LocalizeUpgradesAndAchievs();
   },
@@ -311,6 +364,10 @@ Game.registerMod('fractylCookie',{
     badBuffs.forEach(buff => {buffs = Game.mods['fractylCookie'].rifarr(buffs,buff)});
     if (buffs.length >= 2) {Game.Win('Golden combination')}
     if (buffs.length >= 3) {Game.Win('Golden ternary')}
+    let totalBuildingsOwned = 0
+    for (var i in Game.Objects) {totalBuildingsOwned+=Game.Objects[i].amount;}
+    if (totalBuildingsOwned>=12500) Game.Win('Urban sprawl');
+    if (totalBuildingsOwned>=15000) Game.Win('Stellar engineering');
   },
   rifarr:function(arr, value) {
     let index = arr.indexOf(value);
