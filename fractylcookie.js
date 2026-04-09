@@ -52,9 +52,9 @@ Game.registerMod('fractylCookie',{
     Game.SetTier(building,tier);
     Game.last.order = achorder;
   },
-  addLevel20Achievement:function(name,desc,icon,obj,achorder) {
+  addLevel5Achievement:function(name,desc,icon,obj,achorder) {
     this.addAchievement(name,desc,icon,achorder,'normal')
-    Game.Objects[obj].levelAchiev20 = Game.last;
+    Game.Objects[obj].levelAchiev5 = Game.last;
   },
   addCookieUpgrade:function(obj,upgorder){
     this.upgrades.push(Game.NewUpgradeCookie(obj));
@@ -79,8 +79,8 @@ Game.registerMod('fractylCookie',{
     Game.last.posY=posy;
     Game.PrestigeUpgrades.push(Game.last);
   },
-  addMilk:function(name,icon,pic,rank,type=0) {
-    let milkObj = {name:name,icon:icon,type:type,pic:pic,rank:rank,modded:true};
+  addMilk:function(name,icon,pic,rank,type=0,customPic=true) {
+    let milkObj = {name:name,icon:icon,type:type,pic:pic,rank:rank,customPic:customPic};
     Game.AllMilks.push(milkObj);
     Game.Milks.push(milkObj);
   },
@@ -96,10 +96,11 @@ Game.registerMod('fractylCookie',{
     }
   },
   create:function() {
+    //Add tiers
     Game.Tiers[16]={name:'Stellarbutter',unlock:650,achievUnlock:750,iconRow:0,color:'#a97621',price:500000000000000000000000000000000000000000000}
     Game.Tiers[17]={name:'Caramethyst',unlock:700,achievUnlock:800,iconRow:0,color:'#ddb466',price:5000000000000000000000000000000000000000000000000}
-    Game.NewUpgradeCookie=function(obj)
-		{
+    // Update NewUpgradeCookie (I do not remember why)
+    Game.NewUpgradeCookie=function(obj) {
 			var upgrade=new Game.Upgrade(obj.name,loc("Cookie production multiplier <b>+%1%</b>.",'[x]').replace('[x]',Beautify((typeof(obj.power)==='function'?obj.power(obj):obj.power)))+(EN?'<q>'+obj.desc+'</q>':''),obj.price,obj.icon);
 			upgrade.power=obj.power;
 			upgrade.pool='cookie';
@@ -121,7 +122,7 @@ Game.registerMod('fractylCookie',{
     this.addMilk("Peanut butter milk",[8,2,this.icons],"https://fractylizer.github.io/fractylcookie/img/milkPeanutButter.png",26)
     this.addMilk("Lavender milk",[9,2,this.icons],"https://fractylizer.github.io/fractylcookie/img/milkLavender.png",27)
     //(-milk.icon[0]*48)+'px '+(-milk.icon[1]*48)
-    eval(`Game.UpdateMenu = ` + Game.UpdateMenu.toString().replace(`'+(-milk.icon[0]*48)+'px '+(-milk.icon[1]*48)+'px;`,`;'+writeIcon(milk.icon)+'`).replace(`'+Game.resPath+'img/'+milk.pic+'`,`'+(milk.modded?milk.pic:Game.resPath+'img/'+milk.pic)+'`));
+    eval(`Game.UpdateMenu = ` + Game.UpdateMenu.toString().replace(`'+(-milk.icon[0]*48)+'px '+(-milk.icon[1]*48)+'px;`,`;'+writeIcon(milk.icon)+'`).replace(`'+Game.resPath+'img/'+milk.pic+'`,`'+(milk.customPic?milk.pic:Game.resPath+'img/'+milk.pic)+'`));
     
     // Update levelUp function
     Object.keys(Game.Objects).forEach((key) => {
@@ -131,7 +132,7 @@ Game.registerMod('fractylCookie',{
 				{
 					me.level+=1;
 					if (me.level>=10 && me.levelAchiev10) Game.Win(me.levelAchiev10.name);
-					if (me.level>=20 && me.levelAchiev20) Game.Win(me.levelAchiev20.name);
+					if (me.level>=5 && me.levelAchiev5) Game.Win(me.levelAchiev5.name);
 					if (!free) PlaySound('snd/upgrade.mp3',0.6);
 					Game.LoadMinigames();
 					me.refresh();
@@ -253,27 +254,27 @@ Game.registerMod('fractylCookie',{
     this.addAchievement("Really-er?", "Use the <b>Extra-er Content-er Mod-er</b>.<q>You're gonna need thousands of frames per second, an autoclicker, and a LOT of free time.</q>",[5,0,this.icons],69423,'shadow');
     this.addAchievement("Really-less?", "Use the <b>Extra-less Content-less Mod-less</b>.<q>For the normal ones among us.</q>",[6,0,this.icons],69424,'shadow');
 
-    // Level 20 achievements
-    this.addLevel20Achievement("Double thumbs up", "Reach level <b>20</b> cursors.",[0,27],'Cursor',1071);
-    this.addLevel20Achievement("Old-fashioned", "Reach level <b>20</b> grandmas.",[1,27],'Grandma',1121);
-    this.addLevel20Achievement("Barnyard fever", "Reach level <b>20</b> farms.",[2,27],'Farm',1221);
-    this.addLevel20Achievement("Between a rock and a hard place", "Reach level <b>20</b> mines.",[3,27],'Mine',1321);
-    this.addLevel20Achievement("One million gears", "Reach level <b>20</b> factories.<q>And spinning things.</q>",[4,27],'Factory',1421);
-    this.addLevel20Achievement("Dollars on the penny", "Reach level <b>20</b> banks.",[15,27],'Bank',1446);
-    this.addLevel20Achievement("Call of deity", "Reach level <b>20</b> temples.",[16,27],'Temple',1471);
-    this.addLevel20Achievement("Wonderful wizards of wonderful wizardry", "Reach level <b>20</b> wizard towers.",[17,27],'Wizard tower',1496);
-    this.addLevel20Achievement("Intergalactic planetary", "Reach level <b>20</b> shipments.",[5,27],'Shipment',1521);
-    this.addLevel20Achievement("Elementary", "Reach level <b>20</b> alchemy labs.",[6,27],'Alchemy lab',1621);
-    this.addLevel20Achievement("Remote getaway", "Reach level <b>20</b> portals.",[7,27],'Portal',1721);
-    this.addLevel20Achievement("Blast to and from the past", "Reach level <b>20</b> time machines.",[8,27],'Time machine',1821);
-    this.addLevel20Achievement("Antimattermentarianism", "Reach level <b>20</b> antimatter condensers.",[13,27],'Antimatter condenser',1921);
-    this.addLevel20Achievement("Faster than light", "Reach level <b>20</b> prisms.",[14,27],'Prism',2021);
-    this.addLevel20Achievement("You never know", "Reach level <b>20</b> chancemakers.",[19,27],'Chancemaker',2121);
-    this.addLevel20Achievement("Each solar system an atom", "Reach level <b>20</b> fractal engines.",[20,27],'Fractal engine',2221);
-    this.addLevel20Achievement("Forward compatibility", "Reach level <b>20</b> javascript consoles.",[32,27],'Javascript console',2321);
-    this.addLevel20Achievement("Hyperbolic space", "Reach level <b>20</b> idleverses.",[33,27],'Idleverse',2421);
-    this.addLevel20Achievement("Just think about it", "Reach level <b>20</b> cortex bakers.",[34,27],'Cortex baker',2521);
-    this.addLevel20Achievement("Group selfie", "Reach level <b>20</b> You.",[35,27],'You',2621);
+    // Level 5 achievements
+    this.addLevel5Achievement("Double thumbs up", "Reach level <b>5</b> cursors.",[0,27],'Cursor',1071);
+    this.addLevel5Achievement("Old-fashioned", "Reach level <b>5</b> grandmas.",[1,27],'Grandma',1121);
+    this.addLevel5Achievement("Barnyard fever", "Reach level <b>5</b> farms.",[2,27],'Farm',1221);
+    this.addLevel5Achievement("Between a rock and a hard place", "Reach level <b>5</b> mines.",[3,27],'Mine',1321);
+    this.addLevel5Achievement("One million gears", "Reach level <b>5</b> factories.<q>And spinning things.</q>",[4,27],'Factory',1421);
+    this.addLevel5Achievement("Dollars on the penny", "Reach level <b>5</b> banks.",[15,27],'Bank',1446);
+    this.addLevel5Achievement("Call of deity", "Reach level <b>5</b> temples.",[16,27],'Temple',1471);
+    this.addLevel5Achievement("Wonderful wizards of wonderful wizardry", "Reach level <b>5</b> wizard towers.",[17,27],'Wizard tower',1496);
+    this.addLevel5Achievement("Intergalactic planetary", "Reach level <b>5</b> shipments.",[5,27],'Shipment',1521);
+    this.addLevel5Achievement("Elementary", "Reach level <b>5</b> alchemy labs.",[6,27],'Alchemy lab',1621);
+    this.addLevel5Achievement("Remote getaway", "Reach level <b>5</b> portals.",[7,27],'Portal',1721);
+    this.addLevel5Achievement("Blast to and from the past", "Reach level <b>5</b> time machines.",[8,27],'Time machine',1821);
+    this.addLevel5Achievement("Antimattermentarianism", "Reach level <b>5</b> antimatter condensers.",[13,27],'Antimatter condenser',1921);
+    this.addLevel5Achievement("Faster than light", "Reach level <b>5</b> prisms.",[14,27],'Prism',2021);
+    this.addLevel5Achievement("You never know", "Reach level <b>5</b> chancemakers.",[19,27],'Chancemaker',2121);
+    this.addLevel5Achievement("Each solar system an atom", "Reach level <b>5</b> fractal engines.",[20,27],'Fractal engine',2221);
+    this.addLevel5Achievement("Forward compatibility", "Reach level <b>5</b> javascript consoles.",[32,27],'Javascript console',2321);
+    this.addLevel5Achievement("Hyperbolic space", "Reach level <b>5</b> idleverses.",[33,27],'Idleverse',2421);
+    this.addLevel5Achievement("Just think about it", "Reach level <b>5</b> cortex bakers.",[34,27],'Cortex baker',2521);
+    this.addLevel5Achievement("Group selfie", "Reach level <b>5</b> You.",[35,27],'You',2621);
 
     // Tiered achievements
 
