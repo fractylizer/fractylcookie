@@ -2,7 +2,7 @@
 **A small, incomplete, bad, themeless Cookie Clicker mod.**
 ## Features
 - Adds the Fractyl logo to the big cookie and wrinklers (can be toggled for 1 cookie)
-- Adds a new tier of building upgrades
+- Adds two new tiers of building upgrades: Stellarbutter and Caramethyst!
 - Fifteen new cookie upgrades: 
   - Fractyl cookies
   - Red velvet cookies
@@ -36,6 +36,10 @@
   - Really-plusplusplus?
   - Pretty pink priorities
   - When the cookies ascend just nice
+- Three new ranks of milk, to account for all the extra achievements:
+  - Pistachio milk
+  - Peanut butter milk
+  - Lavender milk
 - Removes Herobrine
 ## How to use
 ### Option 1. Console
